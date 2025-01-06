@@ -1,6 +1,6 @@
 import personService from '../services/persons'
 
-const PersonForm = ({ persons, newName, newNumber, setPersons, setNewName, setNewNumber }) => {
+const PersonForm = ({ persons, newName, newNumber, setPersons, setNewName, setNewNumber, setInfoMessage, setErrorMessage }) => {
     
     const addPerson = (event) => {
         event.preventDefault()
@@ -19,8 +19,14 @@ const PersonForm = ({ persons, newName, newNumber, setPersons, setNewName, setNe
                             setPersons(persons.filter(p => p.id !== oldPerson.id).concat(response.data))
                             setNewName('')
                             setNewNumber('')
+                            setInfoMessage(`Updated ${newName}`)
+                            setTimeout(() => setInfoMessage(null), 5000)
                         })
-                        .catch(error => alert(`person update failed. '${error}'`))
+                        .catch(error => {
+                            console.log(error)
+                            setErrorMessage(`Failed to update ${newName}`)
+                            setTimeout(() => setErrorMessage(null), 5000)
+                        })
                     return
                 }
             }
@@ -36,8 +42,14 @@ const PersonForm = ({ persons, newName, newNumber, setPersons, setNewName, setNe
                 setPersons(persons.concat(response.data))
                 setNewName('')
                 setNewNumber('')
+                setInfoMessage(`Added ${newName}`)
+                setTimeout(() => setInfoMessage(null), 5000)
             })
-            .catch(error => alert(`person creation failed. '${error}'`))
+            .catch(error => {
+                console.log(error)
+                setErrorMessage(`Failed to create ${newName}`)
+                setTimeout(() => setErrorMessage(null), 5000)
+            })
       }
 
     const newNameChanged = (event) => {
