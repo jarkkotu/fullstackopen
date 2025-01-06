@@ -8,11 +8,12 @@ const App = () => {
   ]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [filter, setFilter] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
 
-    if (persons.find(p => p.name === newName)) {  
+    if (persons.find(p => p.name.toLowerCase() === newName)) {  
       alert(`${newName} is already added to phonebook`)
       return
     }
@@ -33,9 +34,21 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleFilterChange = (event) => {
+    console.log('handleFilterChange', event.target.value)
+    setFilter(event.target.value)
+  }
+
+  const shownPersons = filter === ''
+    ? persons
+    : persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <p>filter shown with <input value={filter} onChange={handleFilterChange}></input></p>
+
+      <h2>Add a new</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -47,9 +60,10 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
+
       <h2>Numbers</h2>
       <ul>
-        {persons.map(person => <li key={person.name}>{person.name} {person.number}</li>)}
+        {shownPersons.map(person => <li key={person.name}>{person.name} {person.number}</li>)}
       </ul>
     </div>
   )
