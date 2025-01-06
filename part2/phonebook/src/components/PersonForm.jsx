@@ -1,17 +1,43 @@
+import personService from '../services/persons'
+
 const PersonForm = ({ persons, newName, newNumber, setPersons, setNewName, setNewNumber }) => {
     
     const addPerson = (event) => {
         event.preventDefault()
     
-        if (persons.find(p => p.name.toLowerCase() === newName)) {  
-          alert(`${newName} is already added to phonebook`)
-          return
+        const newPerson = { name: newName, number: newNumber }
+        const oldPerson = persons.find(p => p.name.toLowerCase() === newPerson.name.toLowerCase())
+
+        if (oldPerson) {
+            if (oldPerson.number !== newNumber) {
+                if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+
+                    newPerson.id = oldPerson.id
+                    personService
+                        .update(oldPerson.id, newPerson)
+                        .then(response => {
+                            setPersons(persons.filter(p => p.id !== oldPerson.id).concat(response.data))
+                            setNewName('')
+                            setNewNumber('')
+                        })
+                        .catch(error => alert(`person update failed. '${error}'`))
+                    return
+                }
+            }
+
+            alert(`${newName} is already added to phonebook`)
+            return
         }
     
-        const newPerson = { name: newName, number: newNumber }
-        setPersons(persons.concat(newPerson))
-        setNewName('')
-        setNewNumber('')
+
+        personService
+            .create(newPerson)
+            .then(response => {
+                setPersons(persons.concat(response.data))
+                setNewName('')
+                setNewNumber('')
+            })
+            .catch(error => alert(`person creation failed. '${error}'`))
       }
 
     const newNameChanged = (event) => {
