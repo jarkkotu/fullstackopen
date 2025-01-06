@@ -12,28 +12,20 @@ function App() {
     axios
       .get("https://studies.cs.helsinki.fi/restcountries/api/all")
       .then(response => {
-        console.log("Countries fetched", response)
         setCountries(response.data)
       })
   }, [])
 
   const filterChanged = (event) => {
-    console.log("filter changed", event)
     setFilter(event.target.value)
   }
 
   return (
     <div>
       <div>
-        find countries 
-        <input
-          value={filter}
-          onChange={filterChanged} />
+        find countries <input value={filter} onChange={filterChanged} />
       </div>
-      <FilterResults
-        countries={countries}
-        filter={filter}
-        setFilter={setFilter} />
+      <FilterResults countries={countries} filter={filter} setFilter={setFilter} />
     </div>
   );
 }

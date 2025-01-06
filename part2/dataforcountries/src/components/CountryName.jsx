@@ -1,6 +1,4 @@
-const CountrySimple = ({country, setFilter}) => {
-    console.log("CountrySimple", country)
-
+const CountryName = ({country, setFilter}) => {
     return (
         <div>
             {country.name.common}
@@ -9,4 +7,4 @@ const CountrySimple = ({country, setFilter}) => {
     )
 }
 
-export default CountrySimple
+export default CountryName

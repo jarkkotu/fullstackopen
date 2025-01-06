@@ -1,5 +1,5 @@
 import Country from "./Country"
-import CountrySimple from "./CountrySimple"
+import CountryName from "./CountryName"
 
 const FilterResults = ({countries, filter, setFilter}) => {
 
@@ -30,7 +30,7 @@ const FilterResults = ({countries, filter, setFilter}) => {
             return (
                 <div>
                     {filteredCountries.map(c =>
-                        <CountrySimple country={c} setFilter={setFilter} />
+                        <CountryName country={c} setFilter={setFilter} />
                     )}
                 </div>
             )
