@@ -1,0 +1,28 @@
+{
+  "name": "part4-bloglist",
+  "version": "1.0.0",
+  "description": "fullstack open course part4 bloglist exercise",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jarkkotu/fullstackopen.git"
+  },
+  "author": "jarkko tuikka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jarkkotu/fullstackopen/issues"
+  },
+  "homepage": "https://github.com/jarkkotu/fullstackopen#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5",
+    "nodemon": "^3.1.9"
+  }
+}
