@@ -24,7 +24,7 @@ const PersonForm = ({ persons, newName, newNumber, setPersons, setNewName, setNe
                         })
                         .catch(error => {
                             console.log(error)
-                            setErrorMessage(`Failed to update ${newName}`)
+                            setErrorMessage(`Failed to update ${newName}. ${error.response.data.error}`)
                             setTimeout(() => setErrorMessage(null), 5000)
                         })
                     return
@@ -47,7 +47,7 @@ const PersonForm = ({ persons, newName, newNumber, setPersons, setNewName, setNe
             })
             .catch(error => {
                 console.log(error)
-                setErrorMessage(`Failed to create ${newName}`)
+                setErrorMessage(`Failed to create ${newName}. ${error.response.data.error}`)
                 setTimeout(() => setErrorMessage(null), 5000)
             })
       }
