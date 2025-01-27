@@ -1,4 +1,6 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const mongoose = require('mongoose')
 
 const initialBlogs = [
   {
@@ -7,6 +9,7 @@ const initialBlogs = [
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
+    user: new mongoose.Types.ObjectId('679790982eef484b6ea36386'),
     __v: 0
   },
   {
@@ -15,6 +18,7 @@ const initialBlogs = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
+    user: new mongoose.Types.ObjectId('679790982eef484b6ea36386'),
     __v: 0
   },
   {
@@ -23,6 +27,7 @@ const initialBlogs = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
     likes: 12,
+    user: new mongoose.Types.ObjectId('679790982eef484b6ea36386'),
     __v: 0
   },
   {
@@ -31,6 +36,7 @@ const initialBlogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
     likes: 10,
+    user: new mongoose.Types.ObjectId('679790982eef484b6ea36386'),
     __v: 0
   },
   {
@@ -39,6 +45,7 @@ const initialBlogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
     likes: 0,
+    user: new mongoose.Types.ObjectId('679790982eef484b6ea36386'),
     __v: 0
   },
   {
@@ -47,6 +54,36 @@ const initialBlogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
     likes: 2,
+    user: new mongoose.Types.ObjectId('679790982eef484b6ea36386'),
+    __v: 0
+  }
+]
+
+const initialUsers = [
+  {
+    _id: '679790982eef484b6ea36386',
+    username: 'user0',
+    name: 'user 0',
+    password: 'user0-secret',
+    passwordHash: '$2b$10$EqoP3Ngobd19yIJ.4kCEjObdzQ4b9nDr2yieUY4OEDzqwHrmUTUP6',
+    blogs: [
+      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
+      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
+      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
+      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
+      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
+      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
+    ],
+    __v: 0
+  },
+  {
+    _id: '679790982eef484b6ea36387',
+    username: 'user1',
+    name: 'user 1',
+    password: 'user1-secret',
+    passwordHash: '$2b$10$RLmdAAqCjaLjfAvHjgFQquZ4rB8baypFsij60b1B176UbTTs2bgMq',
+    blogs: [
+    ],
     __v: 0
   }
 ]
@@ -64,6 +101,11 @@ const blogsInDb = async () => {
   return blogs.map(note => note.toJSON())
 }
 
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(user => user.toJSON())
+}
+
 module.exports = {
-  initialBlogs, nonExistingId, blogsInDb
+  initialBlogs, initialUsers, nonExistingId, blogsInDb, usersInDb
 }
