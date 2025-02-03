@@ -13,6 +13,7 @@ const Blogs = ({
   setNewBlogAuthor,
   newBlogUrl,
   setNewBlogUrl,
+  setInfoMessage,
   setErrorMessage }) => {
   return (
     <div>
@@ -31,6 +32,7 @@ const Blogs = ({
         setAuthor={setNewBlogAuthor}
         url={newBlogUrl}
         setUrl={setNewBlogUrl}
+        setInfoMessage={setInfoMessage}
         setErrorMessage={setErrorMessage} />
 
       <br />

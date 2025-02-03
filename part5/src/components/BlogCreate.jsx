@@ -9,6 +9,7 @@ const BlogCreate = ({
   setAuthor,
   url,
   setUrl,
+  setInfoMessage,
   setErrorMessage }) => {
 
   const handleCreate = async (event) => {
@@ -25,8 +26,12 @@ const BlogCreate = ({
       setTitle('')
       setAuthor('')
       setUrl('')
+      setInfoMessage(`Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.author}`)
+      setTimeout(() => {
+        setInfoMessage(null)
+      }, 5000)
     } catch (exception) {
-      setErrorMessage(exception)
+      setErrorMessage(`Blog creation failed: ${exception.response.data.error}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)

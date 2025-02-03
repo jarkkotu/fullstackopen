@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Notification from './components/Notification'
 import Login from './components/Login'
 import Blogs from './components/Blogs'
 import blogService from './services/blogs'
@@ -11,12 +12,12 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [infoMessage, setInfoMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+  useEffect(async () => {
+    var blogs = await blogService.getAll()
+    setBlogs(blogs)
   }, [])
 
   useEffect(() => {
@@ -30,6 +31,10 @@ const App = () => {
 
   return (
     <div>
+      <Notification
+        infoMessage={infoMessage}
+        errorMessage={errorMessage} />
+
       {user === null ?
         <Login
           username={username}
@@ -37,6 +42,7 @@ const App = () => {
           setUser={setUser}
           setUsername={setUsername}
           setPassword={setPassword}
+          setInfoMessage={setInfoMessage}
           setErrorMessage={setErrorMessage}>
         </Login> :
         <Blogs
@@ -50,6 +56,7 @@ const App = () => {
           setNewBlogAuthor={setNewBlogAuthor}
           newBlogUrl={newBlogUrl}
           setNewBlogUrl={setNewBlogUrl}
+          setInfoMessage={setInfoMessage}
           setErrorMessage={setErrorMessage}>
         </Blogs>
       }

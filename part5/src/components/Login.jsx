@@ -1,7 +1,14 @@
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
-const Login = ({ username, password, setUser, setUsername, setPassword, setErrorMessage }) => {
+const Login = ({
+  username,
+  password,
+  setUser,
+  setUsername,
+  setPassword,
+  setInfoMessage,
+  setErrorMessage }) => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -10,13 +17,18 @@ const Login = ({ username, password, setUser, setUsername, setPassword, setError
       const user = await loginService.login({
         username, password,
       })
-      window.localStorage.setItem('loggedUser', JSON.stringify(user)) 
+      window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
+      setInfoMessage('Login successful')
+      setTimeout(() => {
+        setInfoMessage(null)
+      }, 5000)
+
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage(`Login failed: ${exception.response.data.error}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
