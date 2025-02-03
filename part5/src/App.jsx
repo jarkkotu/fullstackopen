@@ -16,6 +16,15 @@ const App = () => {
     )
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
   return (
     <div>
       {user === null ?
@@ -27,7 +36,11 @@ const App = () => {
           setPassword={setPassword}
           setErrorMessage={setErrorMessage}>
         </Login> :
-        <Blogs blogs={blogs}></Blogs>
+        <Blogs
+          blogs={blogs}
+          user={user}
+          setUser={setUser}>
+        </Blogs>
       }
     </div>
   )
