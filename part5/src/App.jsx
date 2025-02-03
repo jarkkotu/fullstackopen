@@ -6,18 +6,17 @@ import blogService from './services/blogs'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlogTitle, setNewBlogTitle] = useState('')
-  const [newBlogAuthor, setNewBlogAuthor] = useState('')
-  const [newBlogUrl, setNewBlogUrl] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [infoMessage, setInfoMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
-  useEffect(async () => {
-    var blogs = await blogService.getAll()
-    setBlogs(blogs)
+  useEffect(() => {
+    blogService.getAll()
+      .then((blogs) => {
+        setBlogs(blogs)
+      })
   }, [])
 
   useEffect(() => {
@@ -50,12 +49,6 @@ const App = () => {
           setBlogs={setBlogs}
           user={user}
           setUser={setUser}
-          newBlogTitle={newBlogTitle}
-          setNewBlogTitle={setNewBlogTitle}
-          newBlogAuthor={newBlogAuthor}
-          setNewBlogAuthor={setNewBlogAuthor}
-          newBlogUrl={newBlogUrl}
-          setNewBlogUrl={setNewBlogUrl}
           setInfoMessage={setInfoMessage}
           setErrorMessage={setErrorMessage}>
         </Blogs>

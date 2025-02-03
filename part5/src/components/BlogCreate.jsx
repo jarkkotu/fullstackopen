@@ -1,31 +1,24 @@
-import blogService from '../services/blogs'
+import { useState, useRef } from 'react'
 
 const BlogCreate = ({
-  blogs,
-  setBlogs,
-  title,
-  setTitle,
-  author,
-  setAuthor,
-  url,
-  setUrl,
+  createBlog,
   setInfoMessage,
   setErrorMessage }) => {
+
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   const handleCreate = async (event) => {
     event.preventDefault()
 
     try {
-      const newBlog = await blogService.create({
-        title,
-        author,
-        url
-      })
+      const newBlog = await createBlog({ title, author, url })
       
-      setBlogs(blogs.concat(newBlog))
       setTitle('')
       setAuthor('')
       setUrl('')
+
       setInfoMessage(`Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.author}`)
       setTimeout(() => {
         setInfoMessage(null)
