@@ -31,7 +31,7 @@ const Login = ({ username, password, setUser, setUsername, setPassword, setError
           <input
             type="text"
             value={username}
-            nameo="Username"
+            name="Username"
             onChange={({ target }) => setUsername(target.value)}></input>
         </div>
         <div>
