@@ -51,7 +51,7 @@ const Blog = ({
 
   const removeButtonStyle = {
     color: 'red',
-    display: user.username == blog.user.username ? '' : 'none'
+    display: user.username === blog.user.username ? '' : 'none'
   }
 
   return (

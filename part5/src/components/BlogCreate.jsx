@@ -14,7 +14,7 @@ const BlogCreate = ({
 
     try {
       const newBlog = await createBlog({ title, author, url })
-      
+
       setTitle('')
       setAuthor('')
       setUrl('')
