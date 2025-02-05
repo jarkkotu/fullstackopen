@@ -28,7 +28,10 @@ const Blogs = ({
     return newBlog
   }
 
-  console.log(blogs)
+  const removeBlog = async (blogObject) => {
+    await blogService.remove(blogObject.id)
+    setBlogs(blogs.filter(b => b.id !== blogObject.id))
+  }
 
   return (
     <div>
@@ -51,8 +54,11 @@ const Blogs = ({
       {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
         <Blog
           key={blog.id}
+          user={user}
           blog={blog}
           updateBlog={updateBlog}
+          removeBlog={removeBlog}
+          setInfoMessage={setInfoMessage}
           setErrorMessage={setErrorMessage}
         />
       )}
