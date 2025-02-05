@@ -1,16 +1,24 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog, setErrorMessage }) => {
 
   const [visible, setVisible] = useState(false)
-
-  const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
-
   const buttonText = visible ? 'hide' : 'view'
-
   const toggleVisibility = () => {
     setVisible(!visible)
+  }
+
+  const addLike = async () => {
+    try {
+      const newBlog = { ...blog, 'likes': blog.likes + 1 }
+      await updateBlog(newBlog)
+    } catch (exception) {
+      setErrorMessage(`Adding a like failed: ${exception.response.data.error}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
   }
 
   const blogStyle = {
@@ -21,8 +29,6 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
-  console.log(blog.user)
-
   return (
     <div style={blogStyle}>
       <span style={{ fontStyle: 'italic', marginRight: 10 }}>{blog.title}</span>
@@ -30,7 +36,7 @@ const Blog = ({ blog }) => {
       <button onClick={toggleVisibility}>{buttonText}</button>
       <div style={showWhenVisible}>
         {blog.url} <br />
-        likes {blog.likes} <button>like</button> <br />
+        likes {blog.likes} <button onClick={addLike}>like</button> <br />
         {blog.user.name}
       </div>
     </div>
