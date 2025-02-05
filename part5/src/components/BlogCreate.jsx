@@ -20,14 +20,10 @@ const BlogCreate = ({
       setUrl('')
 
       setInfoMessage(`Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.author}`)
-      setTimeout(() => {
-        setInfoMessage(null)
-      }, 5000)
+      setTimeout(() => setInfoMessage(null), 5000)
     } catch (exception) {
       setErrorMessage(`Blog creation failed: ${exception.response.data.error}`)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      setTimeout(() => setErrorMessage(null), 5000)
     }
   }
 

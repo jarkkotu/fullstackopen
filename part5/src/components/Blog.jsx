@@ -20,11 +20,10 @@ const Blog = ({
       const newBlog = { ...blog, 'likes': blog.likes + 1 }
       await updateBlog(newBlog)
       setInfoMessage(`Added like to blog ${blog.title} by ${blog.author}`)
+      setTimeout(() => setInfoMessage(null), 5000)
     } catch (exception) {
       setErrorMessage(`Adding a like failed: ${exception.response.data.error}`)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      setTimeout(() => setErrorMessage(null), 5000)
     }
   }
 
@@ -33,12 +32,12 @@ const Blog = ({
       if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
         await removeBlog(blog)
         setInfoMessage(`Removed blog ${blog.title} by ${blog.author}`)
+        setTimeout(() => setInfoMessage(null), 5000)
       }
     } catch (exception) {
       setErrorMessage(`Removing the blog failed: ${exception.response.data.error}`)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      setTimeout(() => setErrorMessage(null), 5000)
+
     }
   }
 

@@ -32,9 +32,13 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 
+  const user = await User.findById(request.userId)
   const blog = await Blog.findById(request.params.id)
-  if (blog.user.toString() === request.userId.toString()) {
+
+  if (blog.user.toString() === user.id.toString()) {
     await Blog.findByIdAndDelete(request.params.id)
+    user.blogs = user.blogs.filter(b => b.id !== blog.id)
+    user.save()
     response.status(204).end()
   } else {
     response.status(403).json({ error: 'You are not allowed to perform this operation' })

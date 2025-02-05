@@ -23,15 +23,10 @@ const Login = ({
       setUsername('')
       setPassword('')
       setInfoMessage('Login successful')
-      setTimeout(() => {
-        setInfoMessage(null)
-      }, 5000)
-
+      setTimeout(() => setInfoMessage(null), 5000)
     } catch (exception) {
       setErrorMessage(`Login failed: ${exception.response.data.error}`)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      setTimeout(() => setErrorMessage(null), 5000)
     }
   }
 
