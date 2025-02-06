@@ -19,7 +19,7 @@ const BlogCreate = ({
       setAuthor('')
       setUrl('')
 
-      setInfoMessage(`Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.author}`)
+      setInfoMessage(`Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.url}`)
       setTimeout(() => setInfoMessage(null), 5000)
     } catch (exception) {
       setErrorMessage(`Blog creation failed: ${exception.response.data.error}`)
@@ -34,6 +34,7 @@ const BlogCreate = ({
         <div>
           title
           <input
+            id="title"
             type="text"
             value={title}
             name="Title"
@@ -42,6 +43,7 @@ const BlogCreate = ({
         <div>
           author
           <input
+            id="author"
             type="text"
             value={author}
             name="Author"
@@ -50,13 +52,14 @@ const BlogCreate = ({
         <div>
           url
           <input
+            id="url"
             type="text"
             value={url}
             name="Url"
             onChange={({ target }) => setUrl(target.value)}></input>
         </div>
 
-        <button type="submit">create</button>
+        <button id="submit-button" type="submit">create</button>
       </form>
     </div>
   )

@@ -37,7 +37,6 @@ const Blog = ({
     } catch (exception) {
       setErrorMessage(`Removing the blog failed: ${exception.response.data.error}`)
       setTimeout(() => setErrorMessage(null), 5000)
-
     }
   }
 
@@ -55,15 +54,16 @@ const Blog = ({
   }
 
   return (
-    <div style={blogStyle}>
-      <span style={{ fontStyle: 'italic', marginRight: 10 }}>{blog.title}</span>
-      <span style={{ marginRight: 10 }}>{blog.author}</span>
-      <button onClick={toggleVisibility}>{buttonText}</button>
-      <div style={showWhenVisible}>
-        {blog.url} <br />
-        likes {blog.likes} <button onClick={handleLike}>like</button> <br />
-        {blog.user.name} <br />
-        <button style={removeButtonStyle} onClick={handleRemove}>remove</button>
+    <div id='outer-div' style={blogStyle}>
+      <span id='title' style={{ fontStyle: 'italic', marginRight: 10 }}>{blog.title}</span>
+      <span id='author' style={{ marginRight: 10 }}>{blog.author}</span>
+      <button id='visibility-button' onClick={toggleVisibility}>{buttonText}</button>
+      <div id='inner-div' style={showWhenVisible}>
+        <span id='url'>{blog.url}</span> <br />
+        <span id='likes'>likes {blog.likes}</span>
+        <button id='like-button' onClick={handleLike}>like</button> <br />
+        <span id='user-name'>{blog.user.name}</span> <br />
+        <button id='remove-button' style={removeButtonStyle} onClick={handleRemove}>remove</button>
       </div>
     </div>
   )
