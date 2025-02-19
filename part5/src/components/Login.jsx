@@ -37,16 +37,18 @@ const Login = ({
           username
           <input
             type="text"
+            name="username"
+            data-testid='username'
             value={username}
-            name="Username"
             onChange={({ target }) => setUsername(target.value)}></input>
         </div>
         <div>
           password
           <input
             type="password"
+            name="password"
+            data-testid='password'
             value={password}
-            name="Password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>

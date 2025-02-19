@@ -50,19 +50,19 @@ const Blog = ({
 
   const removeButtonStyle = {
     color: 'red',
-    display: user.username === blog.user.username ? '' : 'none'
+    display: blog.user !== null && user.username === blog.user.username ? '' : 'none'
   }
 
   return (
     <div id='outer-div' style={blogStyle}>
-      <span id='title' style={{ fontStyle: 'italic', marginRight: 10 }}>{blog.title}</span>
+      <span data-testid='title' id='title' style={{ fontStyle: 'italic', marginRight: 10 }}>{blog.title}</span>
       <span id='author' style={{ marginRight: 10 }}>{blog.author}</span>
       <button id='visibility-button' onClick={toggleVisibility}>{buttonText}</button>
       <div id='inner-div' style={showWhenVisible}>
         <span id='url'>{blog.url}</span> <br />
         <span id='likes'>likes {blog.likes}</span>
         <button id='like-button' onClick={handleLike}>like</button> <br />
-        <span id='user-name'>{blog.user.name}</span> <br />
+        <span id='user-name'>{blog.user !== null ? blog.user.name : ''}</span> <br />
         <button id='remove-button' style={removeButtonStyle} onClick={handleRemove}>remove</button>
       </div>
     </div>

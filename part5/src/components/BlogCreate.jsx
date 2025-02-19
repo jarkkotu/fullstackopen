@@ -34,28 +34,31 @@ const BlogCreate = ({
         <div>
           title
           <input
-            id="title"
             type="text"
+            id="newTitle"
+            data-testid='newTitle'
+            name="title"
             value={title}
-            name="Title"
             onChange={({ target }) => setTitle(target.value)}></input>
         </div>
         <div>
           author
           <input
-            id="author"
             type="text"
+            id="newAuthor"
+            data-testid='newAuthor'
+            name="author"
             value={author}
-            name="Author"
             onChange={({ target }) => setAuthor(target.value)}></input>
         </div>
         <div>
           url
           <input
-            id="url"
             type="text"
-            value={url}
+            id="newUrl"
+            data-testid='newUrl'
             name="Url"
+            value={url}
             onChange={({ target }) => setUrl(target.value)}></input>
         </div>
 
