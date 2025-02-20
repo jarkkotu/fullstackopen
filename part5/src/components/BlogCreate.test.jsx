@@ -24,11 +24,11 @@ describe('<BlogCreate />', () => {
   test('createBlog is called with right details', async () => {
     const user = userEvent.setup()
 
-    const titleElement = container.querySelector('#title')
+    const titleElement = container.querySelector('#newTitle')
     expect(titleElement).toBeDefined().toBeVisible()
-    const authorElement = container.querySelector('#author')
+    const authorElement = container.querySelector('#newAuthor')
     expect(authorElement).toBeDefined().toBeVisible()
-    const urlElement = container.querySelector('#url')
+    const urlElement = container.querySelector('#newUrl')
     expect(urlElement).toBeDefined().toBeVisible()
     const submitButton = container.querySelector('#submit-button')
     expect(submitButton).toBeDefined().toBeVisible()
