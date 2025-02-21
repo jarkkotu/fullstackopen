@@ -1,4 +1,4 @@
-import { vote, initialState } from './anecdoteReducer'
+import { vote, create, initialState } from './anecdoteReducer'
 import reducer from './anecdoteReducer'
 import deepFreeze from 'deep-freeze'
 
@@ -31,5 +31,15 @@ describe('anecdote reducer', () => {
       else 
         expect(x.votes).toEqual(0)
     })
+  })
+
+  test('returns new state with create', () => {
+    const action = create('lorem ipsum')
+
+    deepFreeze(initialState)
+    const newState = reducer(initialState, action)
+
+    expect(newState).toHaveLength(initialState.length + 1)
+    expect(newState[newState.length - 1].content).toEqual('lorem ipsum')
   })
 })

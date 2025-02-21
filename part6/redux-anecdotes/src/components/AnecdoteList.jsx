@@ -2,15 +2,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
 import Anecdote from './Anecdote'
 
-const Anecdotes = () => {
+const AnecdoteList = () => {
 
   const anecdotes = useSelector(state => state)
   const dispatch = useDispatch()
 
   return (
     <div>
-      <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {anecdotes.sort((a, b) =>  b.votes - a.votes).map(anecdote =>
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
@@ -21,4 +20,4 @@ const Anecdotes = () => {
   )
 }
 
-export default Anecdotes
+export default AnecdoteList
