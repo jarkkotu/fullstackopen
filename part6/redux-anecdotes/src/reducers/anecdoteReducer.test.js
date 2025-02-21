@@ -1,5 +1,5 @@
 import { vote, create, initialState } from './anecdoteReducer'
-import reducer from './anecdoteReducer'
+import anecdoteReducer from './anecdoteReducer'
 import deepFreeze from 'deep-freeze'
 
 describe('anecdote reducer', () => {
@@ -9,7 +9,7 @@ describe('anecdote reducer', () => {
       type: 'DO_NOTHING'
     }
 
-    const newState = reducer(undefined, action)
+    const newState = anecdoteReducer(undefined, action)
     expect(newState).toEqual(initialState)
     expect(newState).toHaveLength(6)
   })
@@ -23,7 +23,7 @@ describe('anecdote reducer', () => {
     const action = vote(id)
 
     deepFreeze(initialState)
-    const newState = reducer(initialState, action)
+    const newState = anecdoteReducer(initialState, action)
 
     newState.forEach((x, i, a) => {
       if (x.id === id)
@@ -37,7 +37,7 @@ describe('anecdote reducer', () => {
     const action = create('lorem ipsum')
 
     deepFreeze(initialState)
-    const newState = reducer(initialState, action)
+    const newState = anecdoteReducer(initialState, action)
 
     expect(newState).toHaveLength(initialState.length + 1)
     expect(newState[newState.length - 1].content).toEqual('lorem ipsum')
