@@ -1,4 +1,4 @@
-import { vote, create, initialState } from './anecdoteReducer'
+import { set, append, vote, initialState } from './anecdoteReducer'
 import anecdoteReducer from './anecdoteReducer'
 import deepFreeze from 'deep-freeze'
 
@@ -11,35 +11,76 @@ describe('anecdote reducer', () => {
 
     const newState = anecdoteReducer(undefined, action)
     expect(newState).toEqual(initialState)
-    expect(newState).toHaveLength(6)
   })
 
-  test('returns new state with vote', () => {
-    const id = initialState[2].id
-    initialState.forEach((x, i, a) => {
-      expect(x.votes).toEqual(0)
-    })
-
-    const action = vote(id)
+  test('returns new state with set', () => {
+    const action1 = set([
+      {
+        id: 1,
+        content: 'lorem ipsum',
+        votes: 0
+      },
+      {
+        id: 2,
+        content: 'dolor sit',
+        votes: 0
+      }
+    ])
 
     deepFreeze(initialState)
-    const newState = anecdoteReducer(initialState, action)
+    const newState1 = anecdoteReducer(initialState, action1)
 
-    newState.forEach((x, i, a) => {
-      if (x.id === id)
-        expect(x.votes).toEqual(1)
-      else 
-        expect(x.votes).toEqual(0)
-    })
+    expect(newState1).toHaveLength(2)
+    expect(newState1[0].content).toEqual('lorem ipsum')
+    expect(newState1[1].content).toEqual('dolor sit')
+
+    const action2 = set([
+      {
+        id: 42,
+        content: 'foo',
+        votes: 0
+      },
+    ])
+
+    deepFreeze(newState1)
+    const newState2 = anecdoteReducer(newState1, action2)
+
+    expect(newState2).toHaveLength(1)
+    expect(newState2[0].content).toEqual('foo')
   })
 
-  test('returns new state with create', () => {
-    const action = create('lorem ipsum')
+  test('returns new state with append', () => {
+    const action = append({
+      id: 1,
+      content: 'lorem ipsum',
+      votes: 0
+    })
 
     deepFreeze(initialState)
     const newState = anecdoteReducer(initialState, action)
 
     expect(newState).toHaveLength(initialState.length + 1)
     expect(newState[newState.length - 1].content).toEqual('lorem ipsum')
+  })
+
+  test('returns new state with vote', () => {
+    const action1 = set([
+      {
+        id: 42,
+        content: 'foo',
+        votes: 0
+      },
+    ])
+
+    deepFreeze(initialState)
+    const newState1 = anecdoteReducer(initialState, action1)
+    expect(newState1).toHaveLength(1)
+
+    const action2 = vote(newState1[0].id)
+    deepFreeze(newState1)
+    const newState2 = anecdoteReducer(newState1, action2)
+
+    expect(newState2).toHaveLength(1)
+    expect(newState2[0].votes).toEqual(1)
   })
 })
