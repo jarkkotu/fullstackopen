@@ -1,18 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { vote } from '../reducers/anecdoteReducer'
-import { error, success } from '../reducers/notificationReducer'
+import { useSelector } from 'react-redux'
 import Anecdote from './Anecdote'
 
 const AnecdoteList = () => {
 
   const anecdotes = useSelector(state => state.anecdotes)
   const filter = useSelector(state => state.filter)
-  const dispatch = useDispatch()
-
-  const voteClick = (anecdote) => {
-    dispatch(vote(anecdote.id))
-    dispatch(success(`You voted '${anecdote.content}'`))
-  }
 
   return (
     <div>
@@ -23,7 +15,6 @@ const AnecdoteList = () => {
           <Anecdote
             key={anecdote.id}
             anecdote={anecdote}
-            handleClick={() => voteClick(anecdote)}
           />
       )}
     </div>

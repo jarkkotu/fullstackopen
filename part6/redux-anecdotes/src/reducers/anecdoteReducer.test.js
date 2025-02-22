@@ -1,4 +1,4 @@
-import { set, append, vote, initialState } from './anecdoteReducer'
+import { set, append, update, initialState } from './anecdoteReducer'
 import anecdoteReducer from './anecdoteReducer'
 import deepFreeze from 'deep-freeze'
 
@@ -63,7 +63,7 @@ describe('anecdote reducer', () => {
     expect(newState[newState.length - 1].content).toEqual('lorem ipsum')
   })
 
-  test('returns new state with vote', () => {
+  test('returns new state with update', () => {
     const action1 = set([
       {
         id: 42,
@@ -76,7 +76,8 @@ describe('anecdote reducer', () => {
     const newState1 = anecdoteReducer(initialState, action1)
     expect(newState1).toHaveLength(1)
 
-    const action2 = vote(newState1[0].id)
+    const updatedAnecdote = { ...newState1[0], votes: newState1[0].votes + 1 }
+    const action2 = update(updatedAnecdote)
     deepFreeze(newState1)
     const newState2 = anecdoteReducer(newState1, action2)
 
