@@ -4,11 +4,7 @@ import { beforeEach, describe, test, expect, vi, afterEach } from 'vitest'
 import Blog from './Blog'
 
 describe('<Blog />', () => {
-
-  const userObj = {
-    username: 'malmikko',
-    name: 'Mikko Mallikas'
-  }
+  const userObj = { username: 'malmikko', name: 'Mikko Mallikas' }
 
   const blogObj = {
     title: 'lorem',
@@ -76,7 +72,6 @@ describe('<Blog />', () => {
   })
 
   test('url and likes are shown when view/hide-button is pressed', async () => {
-
     const user = userEvent.setup()
     const visibilityButton = container.querySelector('#visibility-button')
     expect(visibilityButton).toHaveTextContent('view')
@@ -103,7 +98,6 @@ describe('<Blog />', () => {
   })
 
   test('like-handler is called twice if like button is pressed twice', async () => {
-
     const user = userEvent.setup()
 
     const visibilityButton = container.querySelector('#visibility-button')

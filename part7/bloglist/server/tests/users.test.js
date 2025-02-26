@@ -15,7 +15,11 @@ describe('user tests', () => {
     await User.deleteMany({})
 
     const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', name: 'root user', passwordHash })
+    const user = new User({
+      username: 'root',
+      name: 'root user',
+      passwordHash
+    })
 
     await user.save()
   })
@@ -26,7 +30,7 @@ describe('user tests', () => {
     const newUser = {
       username: 'jtuikka',
       name: 'Jarkko Tuikka',
-      password: 'salainen',
+      password: 'salainen'
     }
 
     await api
@@ -48,7 +52,7 @@ describe('user tests', () => {
     const newUser = {
       username: 'root',
       name: 'Superuser',
-      password: 'salainen',
+      password: 'salainen'
     }
 
     const result = await api

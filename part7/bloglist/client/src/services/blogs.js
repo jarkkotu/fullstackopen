@@ -4,9 +4,7 @@ const baseUrl = '/api/blogs'
 let config = null
 
 const setToken = newToken => {
-  config = {
-    headers: { Authorization: `Bearer ${newToken}` }
-  }
+  config = { headers: { Authorization: `Bearer ${newToken}` } }
 }
 
 const getAll = async () => {
@@ -24,7 +22,7 @@ const update = async (id, newBlog) => {
   return response.data
 }
 
-const remove = async (id) => {
+const remove = async id => {
   await axios.delete(`${baseUrl}/${id}`, config)
 }
 

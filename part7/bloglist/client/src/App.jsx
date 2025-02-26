@@ -13,10 +13,9 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    blogService.getAll()
-      .then((blogs) => {
-        setBlogs(blogs)
-      })
+    blogService.getAll().then(blogs => {
+      setBlogs(blogs)
+    })
   }, [])
 
   useEffect(() => {
@@ -32,9 +31,10 @@ const App = () => {
     <div>
       <Notification
         infoMessage={infoMessage}
-        errorMessage={errorMessage} />
+        errorMessage={errorMessage}
+      />
 
-      {user === null ?
+      {user === null ? (
         <Login
           username={username}
           password={password}
@@ -42,17 +42,18 @@ const App = () => {
           setUsername={setUsername}
           setPassword={setPassword}
           setInfoMessage={setInfoMessage}
-          setErrorMessage={setErrorMessage}>
-        </Login> :
+          setErrorMessage={setErrorMessage}
+        ></Login>
+      ) : (
         <Blogs
           blogs={blogs}
           setBlogs={setBlogs}
           user={user}
           setUser={setUser}
           setInfoMessage={setInfoMessage}
-          setErrorMessage={setErrorMessage}>
-        </Blogs>
-      }
+          setErrorMessage={setErrorMessage}
+        ></Blogs>
+      )}
     </div>
   )
 }

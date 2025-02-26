@@ -4,7 +4,6 @@ import { beforeEach, describe, test, expect, vi, afterEach } from 'vitest'
 import BlogCreate from './BlogCreate'
 
 describe('<BlogCreate />', () => {
-
   let container
 
   const createBlogMock = vi.fn()

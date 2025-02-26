@@ -72,7 +72,7 @@ const initialUsers = [
       new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
       new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
       new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
-      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
+      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7')
     ],
     __v: 0
   },
@@ -82,8 +82,7 @@ const initialUsers = [
     name: 'user 1',
     password: 'user1-secret',
     passwordHash: '$2b$10$RLmdAAqCjaLjfAvHjgFQquZ4rB8baypFsij60b1B176UbTTs2bgMq',
-    blogs: [
-    ],
+    blogs: [],
     __v: 0
   }
 ]
@@ -107,5 +106,9 @@ const usersInDb = async () => {
 }
 
 module.exports = {
-  initialBlogs, initialUsers, nonExistingId, blogsInDb, usersInDb
+  initialBlogs,
+  initialUsers,
+  nonExistingId,
+  blogsInDb,
+  usersInDb
 }

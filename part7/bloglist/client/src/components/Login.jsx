@@ -8,15 +8,13 @@ const Login = ({
   setUsername,
   setPassword,
   setInfoMessage,
-  setErrorMessage }) => {
-
-  const handleLogin = async (event) => {
+  setErrorMessage
+}) => {
+  const handleLogin = async event => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({
-        username, password,
-      })
+      const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
@@ -36,23 +34,24 @@ const Login = ({
         <div>
           username
           <input
-            type="text"
-            name="username"
+            type='text'
+            name='username'
             data-testid='username'
             value={username}
-            onChange={({ target }) => setUsername(target.value)}></input>
+            onChange={({ target }) => setUsername(target.value)}
+          ></input>
         </div>
         <div>
           password
           <input
-            type="password"
-            name="password"
+            type='password'
+            name='password'
             data-testid='password'
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button type='submit'>login</button>
       </form>
     </div>
   )

@@ -1,15 +1,11 @@
 import { useState } from 'react'
 
-const BlogCreate = ({
-  createBlog,
-  setInfoMessage,
-  setErrorMessage }) => {
-
+const BlogCreate = ({ createBlog, setInfoMessage, setErrorMessage }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const handleCreate = async (event) => {
+  const handleCreate = async event => {
     event.preventDefault()
 
     try {
@@ -19,7 +15,9 @@ const BlogCreate = ({
       setAuthor('')
       setUrl('')
 
-      setInfoMessage(`Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.url}`)
+      setInfoMessage(
+        `Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.url}`
+      )
       setTimeout(() => setInfoMessage(null), 5000)
     } catch (exception) {
       setErrorMessage(`Blog creation failed: ${exception.response.data.error}`)
@@ -34,35 +32,43 @@ const BlogCreate = ({
         <div>
           title
           <input
-            type="text"
-            id="newTitle"
+            type='text'
+            id='newTitle'
             data-testid='newTitle'
-            name="title"
+            name='title'
             value={title}
-            onChange={({ target }) => setTitle(target.value)}></input>
+            onChange={({ target }) => setTitle(target.value)}
+          ></input>
         </div>
         <div>
           author
           <input
-            type="text"
-            id="newAuthor"
+            type='text'
+            id='newAuthor'
             data-testid='newAuthor'
-            name="author"
+            name='author'
             value={author}
-            onChange={({ target }) => setAuthor(target.value)}></input>
+            onChange={({ target }) => setAuthor(target.value)}
+          ></input>
         </div>
         <div>
           url
           <input
-            type="text"
-            id="newUrl"
+            type='text'
+            id='newUrl'
             data-testid='newUrl'
-            name="Url"
+            name='Url'
             value={url}
-            onChange={({ target }) => setUrl(target.value)}></input>
+            onChange={({ target }) => setUrl(target.value)}
+          ></input>
         </div>
 
-        <button id="submit-button" type="submit">create</button>
+        <button
+          id='submit-button'
+          type='submit'
+        >
+          create
+        </button>
       </form>
     </div>
   )

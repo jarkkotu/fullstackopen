@@ -1,13 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({
-  user,
-  blog,
-  updateBlog,
-  removeBlog,
-  setInfoMessage,
-  setErrorMessage }) => {
-
+const Blog = ({ user, blog, updateBlog, removeBlog, setInfoMessage, setErrorMessage }) => {
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
   const buttonText = visible ? 'hide' : 'view'
@@ -17,7 +10,7 @@ const Blog = ({
 
   const handleLike = async () => {
     try {
-      const newBlog = { ...blog, 'likes': blog.likes + 1 }
+      const newBlog = { ...blog, likes: blog.likes + 1 }
       await updateBlog(newBlog)
       setInfoMessage(`Added like to blog ${blog.title} by ${blog.author}`)
       setTimeout(() => setInfoMessage(null), 5000)
@@ -54,16 +47,50 @@ const Blog = ({
   }
 
   return (
-    <div id='outer-div' style={blogStyle}>
-      <span data-testid='title' id='title' style={{ fontStyle: 'italic', marginRight: 10 }}>{blog.title}</span>
-      <span id='author' style={{ marginRight: 10 }}>{blog.author}</span>
-      <button id='visibility-button' onClick={toggleVisibility}>{buttonText}</button>
-      <div id='inner-div' style={showWhenVisible}>
+    <div
+      id='outer-div'
+      style={blogStyle}
+    >
+      <span
+        data-testid='title'
+        id='title'
+        style={{ fontStyle: 'italic', marginRight: 10 }}
+      >
+        {blog.title}
+      </span>
+      <span
+        id='author'
+        style={{ marginRight: 10 }}
+      >
+        {blog.author}
+      </span>
+      <button
+        id='visibility-button'
+        onClick={toggleVisibility}
+      >
+        {buttonText}
+      </button>
+      <div
+        id='inner-div'
+        style={showWhenVisible}
+      >
         <span id='url'>{blog.url}</span> <br />
         <span id='likes'>likes {blog.likes}</span>
-        <button id='like-button' onClick={handleLike}>like</button> <br />
+        <button
+          id='like-button'
+          onClick={handleLike}
+        >
+          like
+        </button>{' '}
+        <br />
         <span id='user-name'>{blog.user !== null ? blog.user.name : ''}</span> <br />
-        <button id='remove-button' style={removeButtonStyle} onClick={handleRemove}>remove</button>
+        <button
+          id='remove-button'
+          style={removeButtonStyle}
+          onClick={handleRemove}
+        >
+          remove
+        </button>
       </div>
     </div>
   )

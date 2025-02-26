@@ -4,14 +4,11 @@ const User = require('../models/user')
 const { userExtractor } = require('../utils/middleware.js')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog
-    .find({})
-    .populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   response.json(blogs)
 })
 
 blogsRouter.post('/', userExtractor, async (request, response) => {
-
   const user = await User.findById(request.userId)
 
   const blog = new Blog({
@@ -31,7 +28,6 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
-
   const user = await User.findById(request.userId)
   const blog = await Blog.findById(request.params.id)
 
@@ -54,12 +50,11 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
     user: request.body.user.id
   }
 
-  const updated = await Blog
-    .findByIdAndUpdate(
-      request.params.id,
-      blog,
-      { new: true, runValidators: true, context: 'query' })
-    .populate('user', { username: 1, name: 1 })
+  const updated = await Blog.findByIdAndUpdate(request.params.id, blog, {
+    new: true,
+    runValidators: true,
+    context: 'query'
+  }).populate('user', { username: 1, name: 1 })
   response.json(updated)
 })
 
