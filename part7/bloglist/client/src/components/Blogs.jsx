@@ -5,7 +5,7 @@ import BlogCreate from './BlogCreate'
 import LoggedInUser from './LoggedInUser'
 import blogService from '../services/blogs'
 
-const Blogs = ({ blogs, setBlogs, user, setUser, setInfoMessage, setErrorMessage }) => {
+const Blogs = ({ blogs, setBlogs, user, setUser }) => {
   const blogCreateRef = useRef()
 
   const createBlog = async blogObject => {
@@ -39,11 +39,7 @@ const Blogs = ({ blogs, setBlogs, user, setUser, setInfoMessage, setErrorMessage
         buttonLabel='new blog'
         ref={blogCreateRef}
       >
-        <BlogCreate
-          createBlog={createBlog}
-          setInfoMessage={setInfoMessage}
-          setErrorMessage={setErrorMessage}
-        />
+        <BlogCreate createBlog={createBlog} />
       </Togglable>
 
       <br />
@@ -57,8 +53,6 @@ const Blogs = ({ blogs, setBlogs, user, setUser, setInfoMessage, setErrorMessage
             blog={blog}
             updateBlog={updateBlog}
             removeBlog={removeBlog}
-            setInfoMessage={setInfoMessage}
-            setErrorMessage={setErrorMessage}
           />
         ))}
     </div>

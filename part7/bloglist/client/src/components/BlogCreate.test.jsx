@@ -2,21 +2,19 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, test, expect, vi, afterEach } from 'vitest'
 import BlogCreate from './BlogCreate'
+import { Provider } from 'react-redux'
+import store from '../store'
 
 describe('<BlogCreate />', () => {
   let container
 
   const createBlogMock = vi.fn()
-  const setInfoMessageMock = vi.fn()
-  const setErrorMessageMock = vi.fn()
 
   beforeEach(() => {
     container = render(
-      <BlogCreate
-        createBlog={createBlogMock}
-        setInfoMessage={setInfoMessageMock}
-        setErrorMessage={setErrorMessageMock}
-      />
+      <Provider store={store}>
+        <BlogCreate createBlog={createBlogMock} />
+      </Provider>
     ).container
   })
 

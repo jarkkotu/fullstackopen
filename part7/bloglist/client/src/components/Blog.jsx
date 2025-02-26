@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ user, blog, updateBlog, removeBlog, setInfoMessage, setErrorMessage }) => {
+const Blog = ({ user, blog, updateBlog, removeBlog }) => {
   const [visible, setVisible] = useState(false)
+  const dispatch = useDispatch()
   const showWhenVisible = { display: visible ? '' : 'none' }
   const buttonText = visible ? 'hide' : 'view'
   const toggleVisibility = () => {
@@ -12,11 +15,9 @@ const Blog = ({ user, blog, updateBlog, removeBlog, setInfoMessage, setErrorMess
     try {
       const newBlog = { ...blog, likes: blog.likes + 1 }
       await updateBlog(newBlog)
-      setInfoMessage(`Added like to blog ${blog.title} by ${blog.author}`)
-      setTimeout(() => setInfoMessage(null), 5000)
+      dispatch(setNotification(`Added like to blog ${blog.title} by ${blog.author}`))
     } catch (exception) {
-      setErrorMessage(`Adding a like failed: ${exception.response.data.error}`)
-      setTimeout(() => setErrorMessage(null), 5000)
+      dispatch(setNotification(`Adding a like failed: ${exception.response.data.error}`, false))
     }
   }
 
@@ -24,12 +25,10 @@ const Blog = ({ user, blog, updateBlog, removeBlog, setInfoMessage, setErrorMess
     try {
       if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
         await removeBlog(blog)
-        setInfoMessage(`Removed blog ${blog.title} by ${blog.author}`)
-        setTimeout(() => setInfoMessage(null), 5000)
+        dispatch(setNotification(`Removed blog ${blog.title} by ${blog.author}`))
       }
     } catch (exception) {
-      setErrorMessage(`Removing the blog failed: ${exception.response.data.error}`)
-      setTimeout(() => setErrorMessage(null), 5000)
+      dispatch(setNotification(`Removing the blog failed: ${exception.response.data.error}`, false))
     }
   }
 

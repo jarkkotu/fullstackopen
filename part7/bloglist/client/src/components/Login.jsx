@@ -1,15 +1,10 @@
+import { useDispatch } from 'react-redux'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
+import { setNotification } from '../reducers/notificationReducer'
 
-const Login = ({
-  username,
-  password,
-  setUser,
-  setUsername,
-  setPassword,
-  setInfoMessage,
-  setErrorMessage
-}) => {
+const Login = ({ username, password, setUser, setUsername, setPassword }) => {
+  const dispatch = useDispatch()
   const handleLogin = async event => {
     event.preventDefault()
 
@@ -20,11 +15,9 @@ const Login = ({
       setUser(user)
       setUsername('')
       setPassword('')
-      setInfoMessage('Login successful')
-      setTimeout(() => setInfoMessage(null), 5000)
+      dispatch(setNotification('Login successful'))
     } catch (exception) {
-      setErrorMessage(`Login failed: ${exception.response.data.error}`)
-      setTimeout(() => setErrorMessage(null), 5000)
+      dispatch(setNotification(`Login failed: ${exception.response.data.error}`, false))
     }
   }
 

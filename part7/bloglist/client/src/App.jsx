@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Notification from './components/Notification'
+import Notifications from './components/Notifications'
 import Login from './components/Login'
 import Blogs from './components/Blogs'
 import blogService from './services/blogs'
@@ -9,8 +9,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [infoMessage, setInfoMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -29,10 +27,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification
-        infoMessage={infoMessage}
-        errorMessage={errorMessage}
-      />
+      <Notifications />
 
       {user === null ? (
         <Login
@@ -41,8 +36,6 @@ const App = () => {
           setUser={setUser}
           setUsername={setUsername}
           setPassword={setPassword}
-          setInfoMessage={setInfoMessage}
-          setErrorMessage={setErrorMessage}
         ></Login>
       ) : (
         <Blogs
@@ -50,8 +43,6 @@ const App = () => {
           setBlogs={setBlogs}
           user={user}
           setUser={setUser}
-          setInfoMessage={setInfoMessage}
-          setErrorMessage={setErrorMessage}
         ></Blogs>
       )}
     </div>

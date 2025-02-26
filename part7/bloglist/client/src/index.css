@@ -4,6 +4,7 @@
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
+  border-width: 1;
   padding: 10px;
   margin-bottom: 10px;
 }
@@ -14,6 +15,7 @@
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
+  border-width: 1;
   padding: 10px;
   margin-bottom: 10px;
 }

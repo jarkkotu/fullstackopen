@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 
-const BlogCreate = ({ createBlog, setInfoMessage, setErrorMessage }) => {
+const BlogCreate = ({ createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const dispatch = useDispatch()
 
   const handleCreate = async event => {
     event.preventDefault()
@@ -14,14 +17,13 @@ const BlogCreate = ({ createBlog, setInfoMessage, setErrorMessage }) => {
       setTitle('')
       setAuthor('')
       setUrl('')
-
-      setInfoMessage(
-        `Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.url}`
+      dispatch(
+        setNotification(
+          `Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.url}`
+        )
       )
-      setTimeout(() => setInfoMessage(null), 5000)
     } catch (exception) {
-      setErrorMessage(`Blog creation failed: ${exception.response.data.error}`)
-      setTimeout(() => setErrorMessage(null), 5000)
+      dispatch(setNotification(`Blog creation failed: ${exception.response.data.error}`, false))
     }
   }
 
