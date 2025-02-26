@@ -18,8 +18,8 @@ describe('<Blog />', () => {
 
   let container
 
-  const updateBlogMock = vi.fn()
-  const removeBlogMock = vi.fn()
+  const onUpdateBlogMock = vi.fn()
+  const onRemoveBlogMock = vi.fn()
 
   beforeEach(() => {
     container = render(
@@ -27,8 +27,8 @@ describe('<Blog />', () => {
         <Blog
           user={userObj}
           blog={blogObj}
-          updateBlog={updateBlogMock}
-          removeBlog={removeBlogMock}
+          onUpdateBlog={onUpdateBlogMock}
+          onRemoveBlog={onRemoveBlogMock}
         />
       </Provider>
     ).container
@@ -107,6 +107,6 @@ describe('<Blog />', () => {
     expect(likeButton).toBeDefined().toBeVisible()
     await user.click(likeButton)
     await user.click(likeButton)
-    expect(updateBlogMock.mock.calls).toHaveLength(2)
+    expect(onUpdateBlogMock.mock.calls).toHaveLength(2)
   })
 })

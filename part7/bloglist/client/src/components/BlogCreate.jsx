@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { create } from '../reducers/blogReducer'
 import { showSuccess, showError } from '../reducers/notificationReducer'
 
-const BlogCreate = ({ createBlog }) => {
+const BlogCreate = ({ onCreateBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -14,7 +13,7 @@ const BlogCreate = ({ createBlog }) => {
 
     try {
       // This throws error if fails
-      var newBlog = await createBlog({ title, author, url })
+      var newBlog = await onCreateBlog({ title, author, url })
 
       setTitle('')
       setAuthor('')

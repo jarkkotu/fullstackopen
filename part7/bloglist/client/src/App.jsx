@@ -4,7 +4,7 @@ import Notifications from './components/Notifications'
 import Login from './components/Login'
 import Blogs from './components/Blogs'
 import blogService from './services/blogs'
-import { initialize } from './reducers/blogReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 import { showSuccess, showError } from './reducers/notificationReducer'
 
 const App = () => {
@@ -17,7 +17,7 @@ const App = () => {
   useEffect(() => {
     const initializeAsync = async () => {
       try {
-        await dispatch(initialize())
+        await dispatch(initializeBlogs())
       } catch (error) {
         dispatch(showError(`Failed to initialize: ${error.response.data.error}`))
       }

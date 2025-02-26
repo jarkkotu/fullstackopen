@@ -8,12 +8,12 @@ import store from '../store'
 describe('<BlogCreate />', () => {
   let container
 
-  const createBlogMock = vi.fn()
+  const onCreateBlogMock = vi.fn()
 
   beforeEach(() => {
     container = render(
       <Provider store={store}>
-        <BlogCreate createBlog={createBlogMock} />
+        <BlogCreate onCreateBlog={onCreateBlogMock} />
       </Provider>
     ).container
   })
@@ -38,7 +38,7 @@ describe('<BlogCreate />', () => {
     await user.type(authorElement, author)
     await user.type(urlElement, url)
 
-    createBlogMock.mockResolvedValue({
+    onCreateBlogMock.mockResolvedValue({
       title: title,
       author: author,
       url: url
@@ -46,9 +46,9 @@ describe('<BlogCreate />', () => {
 
     await user.click(submitButton)
 
-    expect(createBlogMock.mock.calls).toHaveLength(1)
-    expect(createBlogMock.mock.calls[0][0].title, title)
-    expect(createBlogMock.mock.calls[0][0].author, author)
-    expect(createBlogMock.mock.calls[0][0].url, url)
+    expect(onCreateBlogMock.mock.calls).toHaveLength(1)
+    expect(onCreateBlogMock.mock.calls[0][0].title, title)
+    expect(onCreateBlogMock.mock.calls[0][0].author, author)
+    expect(onCreateBlogMock.mock.calls[0][0].url, url)
   })
 })

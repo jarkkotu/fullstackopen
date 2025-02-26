@@ -1,35 +1,12 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { showSuccess, showError } from '../reducers/notificationReducer'
 
-const Blog = ({ user, blog, updateBlog, removeBlog }) => {
+const Blog = ({ user, blog, onUpdateBlog, onRemoveBlog }) => {
   const [visible, setVisible] = useState(false)
-  const dispatch = useDispatch()
+
   const showWhenVisible = { display: visible ? '' : 'none' }
   const buttonText = visible ? 'hide' : 'view'
   const toggleVisibility = () => {
     setVisible(!visible)
-  }
-
-  const handleLike = async () => {
-    try {
-      const newBlog = { ...blog, likes: blog.likes + 1 }
-      await updateBlog(newBlog)
-      dispatch(showSuccess(`Added like to blog ${blog.title} by ${blog.author}`))
-    } catch (exception) {
-      dispatch(showError(`Adding a like failed: ${exception.response.data.error}`))
-    }
-  }
-
-  const handleRemove = async () => {
-    try {
-      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-        await removeBlog(blog)
-        dispatch(showSuccess(`Removed blog ${blog.title} by ${blog.author}`))
-      }
-    } catch (exception) {
-      dispatch(showError(`Removing the blog failed: ${exception.response.data.error}`))
-    }
   }
 
   const blogStyle = {
@@ -77,7 +54,7 @@ const Blog = ({ user, blog, updateBlog, removeBlog }) => {
         <span id='likes'>likes {blog.likes}</span>
         <button
           id='like-button'
-          onClick={handleLike}
+          onClick={() => onUpdateBlog({ ...blog, likes: blog.likes + 1 })}
         >
           like
         </button>{' '}
@@ -86,7 +63,7 @@ const Blog = ({ user, blog, updateBlog, removeBlog }) => {
         <button
           id='remove-button'
           style={removeButtonStyle}
-          onClick={handleRemove}
+          onClick={() => onRemoveBlog(blog)}
         >
           remove
         </button>

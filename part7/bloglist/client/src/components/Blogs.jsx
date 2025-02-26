@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { create } from '../reducers/blogReducer'
+import { createBlog, updateBlog, removeBlog } from '../reducers/blogReducer'
 import Togglable from './Togglable'
 import Blog from './Blog'
 import BlogCreate from './BlogCreate'
@@ -11,10 +11,28 @@ const Blogs = ({ user, setUser }) => {
   const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
 
-  const createBlog = async blogObject => {
-    var newBlog = dispatch(create(blogObject))
+  const onCreateBlog = async blog => {
+    var newBlog = await dispatch(createBlog(blog))
     blogCreateRef.current.toggleVisibility()
     return newBlog
+  }
+
+  const onUpdateBlog = async blog => {
+    try {
+      const updatedBlog = await dispatch(updateBlog(blog))
+      dispatch(showSuccess(`Added like to blog ${updatedBlog.title} by ${updatedBlog.author}`))
+    } catch (error) {
+      dispatch(showError(`Adding a like failed: ${error.response.data.error}`))
+    }
+  }
+
+  const onRemoveBlog = async blog => {
+    try {
+      await dispatch(removeBlog(blog))
+      dispatch(showSuccess(`Removed blog ${blog.title} by ${blog.author}`))
+    } catch (error) {
+      dispatch(showError(`Removing the blog failed: ${error.response.data.error}`))
+    }
   }
 
   return (
@@ -30,7 +48,7 @@ const Blogs = ({ user, setUser }) => {
         buttonLabel='new blog'
         ref={blogCreateRef}
       >
-        <BlogCreate createBlog={createBlog} />
+        <BlogCreate onCreateBlog={onCreateBlog} />
       </Togglable>
 
       <br />
@@ -42,6 +60,8 @@ const Blogs = ({ user, setUser }) => {
             key={blog.id}
             user={user}
             blog={blog}
+            onUpdateBlog={onUpdateBlog}
+            onRemoveBlog={onRemoveBlog}
           />
         ))}
     </div>
