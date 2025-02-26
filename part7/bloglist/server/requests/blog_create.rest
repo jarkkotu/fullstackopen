@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haHRpc2FhcmkiLCJpZCI6IjY3OTdhZmMzOGZkOGI3YTUyYzFlYzNjYSIsImlhdCI6MTczNzk5NDI4MSwiZXhwIjoxNzM3OTk3ODgxfQ.pyxpXtuziYdxImPGOrQ5-vIOS47DQnDR1JyxoEQJxo0
+
+{
+   "title": "Aku Ankka 12",
+   "author": "Don Rosa",
+   "url": "http://www.example.com",
+   "likes": 14
+}
