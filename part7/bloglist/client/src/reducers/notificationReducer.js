@@ -19,11 +19,11 @@ const notificationSlice = createSlice({
 
 export const { add, remove } = notificationSlice.actions
 
-export const setNotification = (content, isSuccess = true, timeoutInSeconds = 5) => {
+const show = (content, type, timeoutInSeconds) => {
   return async dispatch => {
     const notification = {
       id: getId(),
-      type: isSuccess ? 'success' : 'error',
+      type: type,
       content: content,
       timeout: timeoutInSeconds * 1000
     }
@@ -32,6 +32,14 @@ export const setNotification = (content, isSuccess = true, timeoutInSeconds = 5)
       dispatch(remove(notification))
     }, notification.timeout)
   }
+}
+
+export const showSuccess = (content, timeoutInSeconds = 5) => {
+  return show(content, 'success', timeoutInSeconds)
+}
+
+export const showError = (content, timeoutInSeconds = 5) => {
+  return show(content, 'error', timeoutInSeconds)
 }
 
 export default notificationSlice.reducer

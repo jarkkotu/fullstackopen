@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
+import { showSuccess, showError } from '../reducers/notificationReducer'
 
 const Blog = ({ user, blog, updateBlog, removeBlog }) => {
   const [visible, setVisible] = useState(false)
@@ -15,9 +15,9 @@ const Blog = ({ user, blog, updateBlog, removeBlog }) => {
     try {
       const newBlog = { ...blog, likes: blog.likes + 1 }
       await updateBlog(newBlog)
-      dispatch(setNotification(`Added like to blog ${blog.title} by ${blog.author}`))
+      dispatch(showSuccess(`Added like to blog ${blog.title} by ${blog.author}`))
     } catch (exception) {
-      dispatch(setNotification(`Adding a like failed: ${exception.response.data.error}`, false))
+      dispatch(showError(`Adding a like failed: ${exception.response.data.error}`))
     }
   }
 
@@ -25,10 +25,10 @@ const Blog = ({ user, blog, updateBlog, removeBlog }) => {
     try {
       if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
         await removeBlog(blog)
-        dispatch(setNotification(`Removed blog ${blog.title} by ${blog.author}`))
+        dispatch(showSuccess(`Removed blog ${blog.title} by ${blog.author}`))
       }
     } catch (exception) {
-      dispatch(setNotification(`Removing the blog failed: ${exception.response.data.error}`, false))
+      dispatch(showError(`Removing the blog failed: ${exception.response.data.error}`))
     }
   }
 

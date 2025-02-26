@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
+import { create } from '../reducers/blogReducer'
+import { showSuccess, showError } from '../reducers/notificationReducer'
 
 const BlogCreate = ({ createBlog }) => {
   const [title, setTitle] = useState('')
@@ -12,18 +13,20 @@ const BlogCreate = ({ createBlog }) => {
     event.preventDefault()
 
     try {
-      const newBlog = await createBlog({ title, author, url })
+      // This throws error if fails
+      var newBlog = await createBlog({ title, author, url })
 
       setTitle('')
       setAuthor('')
       setUrl('')
+
       dispatch(
-        setNotification(
+        showSuccess(
           `Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.url}`
         )
       )
     } catch (exception) {
-      dispatch(setNotification(`Blog creation failed: ${exception.response.data.error}`, false))
+      dispatch(showError(`Blog creation failed: ${exception.response.data.error}`))
     }
   }
 

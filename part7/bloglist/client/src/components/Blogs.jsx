@@ -1,29 +1,20 @@
 import { useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { create } from '../reducers/blogReducer'
 import Togglable from './Togglable'
 import Blog from './Blog'
 import BlogCreate from './BlogCreate'
 import LoggedInUser from './LoggedInUser'
-import blogService from '../services/blogs'
 
-const Blogs = ({ blogs, setBlogs, user, setUser }) => {
+const Blogs = ({ user, setUser }) => {
   const blogCreateRef = useRef()
+  const blogs = useSelector(state => state.blogs)
+  const dispatch = useDispatch()
 
   const createBlog = async blogObject => {
-    const newBlog = await blogService.create(blogObject)
-    setBlogs(blogs.concat(newBlog))
+    var newBlog = dispatch(create(blogObject))
     blogCreateRef.current.toggleVisibility()
     return newBlog
-  }
-
-  const updateBlog = async blogObject => {
-    const newBlog = await blogService.update(blogObject.id, blogObject)
-    setBlogs(blogs.map(b => (b.id === newBlog.id ? newBlog : b)))
-    return newBlog
-  }
-
-  const removeBlog = async blogObject => {
-    await blogService.remove(blogObject.id)
-    setBlogs(blogs.filter(b => b.id !== blogObject.id))
   }
 
   return (
@@ -44,15 +35,13 @@ const Blogs = ({ blogs, setBlogs, user, setUser }) => {
 
       <br />
 
-      {blogs
+      {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map(blog => (
           <Blog
             key={blog.id}
             user={user}
             blog={blog}
-            updateBlog={updateBlog}
-            removeBlog={removeBlog}
           />
         ))}
     </div>

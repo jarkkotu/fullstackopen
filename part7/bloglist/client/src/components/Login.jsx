@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
-import { setNotification } from '../reducers/notificationReducer'
+import { showSuccess, showError } from '../reducers/notificationReducer'
 
 const Login = ({ username, password, setUser, setUsername, setPassword }) => {
   const dispatch = useDispatch()
@@ -15,9 +15,9 @@ const Login = ({ username, password, setUser, setUsername, setPassword }) => {
       setUser(user)
       setUsername('')
       setPassword('')
-      dispatch(setNotification('Login successful'))
-    } catch (exception) {
-      dispatch(setNotification(`Login failed: ${exception.response.data.error}`, false))
+      dispatch(showSuccess('Login successful'))
+    } catch (error) {
+      dispatch(showError(`Login failed: ${error.response.data.error}`))
     }
   }
 
