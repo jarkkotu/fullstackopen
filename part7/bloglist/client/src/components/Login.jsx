@@ -1,21 +1,20 @@
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import loginService from '../services/login'
-import blogService from '../services/blogs'
 import { showSuccess, showError } from '../reducers/notificationReducer'
+import { login } from '../reducers/userReducer'
 
-const Login = ({ username, password, setUser, setUsername, setPassword }) => {
+const Login = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const dispatch = useDispatch()
   const handleLogin = async event => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({ username, password })
-      window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
+      var user = await dispatch(login(username, password))
       setUsername('')
       setPassword('')
-      dispatch(showSuccess('Login successful'))
+      dispatch(showSuccess(`Hello ${user.name}!`))
     } catch (error) {
       dispatch(showError(`Login failed: ${error.response.data.error}`))
     }

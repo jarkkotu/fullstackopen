@@ -1,14 +1,16 @@
 import { useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { createBlog, updateBlog, removeBlog } from '../reducers/blogReducer'
+import { showSuccess, showError } from '../reducers/notificationReducer'
 import Togglable from './Togglable'
 import Blog from './Blog'
 import BlogCreate from './BlogCreate'
 import LoggedInUser from './LoggedInUser'
 
-const Blogs = ({ user, setUser }) => {
+const Blogs = () => {
   const blogCreateRef = useRef()
   const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
 
   const onCreateBlog = async blog => {
@@ -39,10 +41,7 @@ const Blogs = ({ user, setUser }) => {
     <div>
       <h2>blogs</h2>
 
-      <LoggedInUser
-        user={user}
-        setUser={setUser}
-      />
+      <LoggedInUser />
 
       <Togglable
         buttonLabel='new blog'
