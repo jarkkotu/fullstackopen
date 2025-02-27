@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
-const Blog = ({ user, blog, onUpdateBlog, onRemoveBlog }) => {
+const Blog = ({ blog, onUpdateBlog, onRemoveBlog }) => {
   const [visible, setVisible] = useState(false)
+  const login = useSelector(state => state.login)
 
   const showWhenVisible = { display: visible ? '' : 'none' }
   const buttonText = visible ? 'hide' : 'view'
@@ -19,7 +21,7 @@ const Blog = ({ user, blog, onUpdateBlog, onRemoveBlog }) => {
 
   const removeButtonStyle = {
     color: 'red',
-    display: blog.user !== null && user.username === blog.user.username ? '' : 'none'
+    display: blog.user !== null && login.username === blog.user.username ? '' : 'none'
   }
 
   return (

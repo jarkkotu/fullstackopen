@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { showSuccess, showError } from '../reducers/notificationReducer'
-import { login } from '../reducers/userReducer'
+import { login } from '../reducers/loginReducer'
 
 const Login = () => {
   const [username, setUsername] = useState('')

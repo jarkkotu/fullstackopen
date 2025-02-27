@@ -10,7 +10,6 @@ import LoggedInUser from './LoggedInUser'
 const Blogs = () => {
   const blogCreateRef = useRef()
   const blogs = useSelector(state => state.blogs)
-  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
 
   const onCreateBlog = async blog => {
@@ -57,7 +56,6 @@ const Blogs = () => {
         .map(blog => (
           <Blog
             key={blog.id}
-            user={user}
             blog={blog}
             onUpdateBlog={onUpdateBlog}
             onRemoveBlog={onRemoveBlog}

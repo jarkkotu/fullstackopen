@@ -22,7 +22,6 @@ describe('notification reducer', () => {
     })
     const newState = notificationReducer(initialState, action)
 
-    console.log(newState)
     expect(newState).toHaveLength(1)
     expect(newState[0].type).toEqual('SUCCESS')
     expect(newState[0].content).toEqual('FOO')

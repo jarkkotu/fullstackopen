@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { logout } from '../reducers/userReducer'
+import { logout } from '../reducers/loginReducer'
 
 const LoggedInUser = () => {
-  const user = useSelector(state => state.user)
+  const login = useSelector(state => state.login)
   const dispatch = useDispatch()
 
   const onLogout = () => {
@@ -12,7 +12,7 @@ const LoggedInUser = () => {
   return (
     <div>
       <p>
-        {user.name} logged in <button onClick={onLogout}>logout</button>
+        {login.name} logged in <button onClick={onLogout}>logout</button>
       </p>
     </div>
   )

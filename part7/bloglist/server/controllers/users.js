@@ -13,19 +13,14 @@ usersRouter.get('/', async (request, response) => {
 })
 
 usersRouter.post('/', async (request, response) => {
-  console.log(request.body)
   const { username, name, password } = request.body
-
   const passwordHash = await bcrypt.hash(password, 10)
-
   const user = new User({
     username,
     name,
     passwordHash
   })
-
   const saved = await user.save()
-
   response.status(201).json(saved)
 })
 

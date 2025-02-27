@@ -1,44 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit'
-import loginService from '../services/login'
-import blogService from '../services/blogs'
+import userService from '../services/users'
 
-export const initialState = null
+export const initialState = []
 
 const userSlice = createSlice({
-  name: 'user',
+  name: 'users',
   initialState,
   reducers: {
-    add(state, action) {
+    set(state, action) {
       return action.payload
     },
+    append(state, action) {
+      state.push(action.payload)
+    },
+    update(state, action) {
+      return (state = state.map(x => (x.id === action.payload.id ? action.payload : x)))
+    },
     remove(state, action) {
-      return null
+      return (state = state.filter(x => x.id !== action.payload.id))
     }
   }
 })
 
-export const { add, remove } = userSlice.actions
+export const { set, append, update, remove } = userSlice.actions
 
-export const initializeUser = () => async dispatch => {
-  const loggedUserJSON = window.localStorage.getItem('loggedUser')
-  if (loggedUserJSON) {
-    const user = JSON.parse(loggedUserJSON)
-    dispatch(add(user))
-    blogService.setToken(user.token)
-  }
+export const initializeUsers = () => async dispatch => {
+  const users = await userService.getAll()
+  dispatch(set(users))
+  return users
 }
 
-export const login = (username, password) => async dispatch => {
-  const user = await loginService.login({ username, password })
-  window.localStorage.setItem('loggedUser', JSON.stringify(user))
-  dispatch(add(user))
-  blogService.setToken(user.token)
-  return user
-}
-
-export const logout = () => async dispatch => {
-  window.localStorage.removeItem('loggedUser')
-  blogService.setToken(null)
+export const createUser = user => async dispatch => {
+  const newUser = await userService.create(user)
+  dispatch(append(newUser))
+  return newUser
 }
 
 export default userSlice.reducer

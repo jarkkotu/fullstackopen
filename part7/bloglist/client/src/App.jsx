@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Routes, Route, Link, Navigate, useParams, useNavigate, useMatch } from 'react-router-dom'
 import Notifications from './components/Notifications'
 import Login from './components/Login'
 import Blogs from './components/Blogs'
+import Users from './components/Users'
 import { initializeBlogs } from './reducers/blogReducer'
 import { showSuccess, showError } from './reducers/notificationReducer'
-import { initializeUser } from './reducers/userReducer'
+import { initializeLogin } from './reducers/loginReducer'
 
 const App = () => {
-  const user = useSelector(state => state.user)
+  const login = useSelector(state => state.login)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -16,7 +18,7 @@ const App = () => {
       try {
         await dispatch(initializeBlogs())
       } catch (error) {
-        dispatch(showError(`Failed to initialize: ${error.response.data.error}`))
+        dispatch(showError(`Failed to load blogs: ${error.response.data.error}`))
       }
     }
 
@@ -24,13 +26,34 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    dispatch(initializeUser())
+    dispatch(initializeLogin())
   }, [])
 
   return (
     <div>
       <Notifications />
-      {user === null ? <Login /> : <Blogs />}
+      {login === null ? (
+        <Login />
+      ) : (
+        <Routes>
+          <Route
+            path='/'
+            element={<Blogs />}
+          />
+          <Route
+            path='/users'
+            element={<Users />}
+          />
+        </Routes>
+      )}
+      <div>
+        <br></br>
+        Bloglist app by Jarkko Tuikka See{' '}
+        <a href='https://github.com/jarkkotu/fullstackopen'>
+          https://github.com/jarkkotu/fullstackopen
+        </a>{' '}
+        for the source code.
+      </div>
     </div>
   )
 }
