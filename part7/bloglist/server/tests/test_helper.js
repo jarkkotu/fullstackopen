@@ -68,11 +68,11 @@ const initialUsers = [
     passwordHash: '$2b$10$EqoP3Ngobd19yIJ.4kCEjObdzQ4b9nDr2yieUY4OEDzqwHrmUTUP6',
     blogs: [
       new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
-      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
-      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
-      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
-      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7'),
-      new mongoose.Types.ObjectId('5a422a851b54a676234d17f7')
+      new mongoose.Types.ObjectId('5a422aa71b54a676234d17f8'),
+      new mongoose.Types.ObjectId('5a422b3a1b54a676234d17f9'),
+      new mongoose.Types.ObjectId('5a422b3a1b54a676234d17fa'),
+      new mongoose.Types.ObjectId('5a422a851b54a676234d17fb'),
+      new mongoose.Types.ObjectId('5a422a851b54a676234d17fc')
     ],
     __v: 0
   },
