@@ -1,10 +1,13 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const Comment = require('../models/comment')
 const { userExtractor } = require('../utils/middleware.js')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({})
+    .populate('user', { username: 1, name: 1 })
+    .populate('comments', { comment: 1 })
   response.json(blogs)
 })
 
@@ -16,11 +19,13 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
     author: request.body.author,
     url: request.body.url,
     likes: request.body.likes || 0,
-    user: user._id
+    user: user._id,
+    comments: []
   })
 
   const savedBlog = await blog.save()
   Blog.populate(savedBlog, { path: 'user' })
+  Blog.populate(savedBlog, { path: 'comments' })
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
 
@@ -33,6 +38,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 
   if (blog.user.toString() === user.id.toString()) {
     await Blog.findByIdAndDelete(request.params.id)
+    await Comment.deleteMany({ blog: blog._id.toString() })
     user.blogs = user.blogs.filter(b => b.id !== blog.id)
     user.save()
     response.status(204).end()
@@ -46,16 +52,36 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
     title: request.body.title,
     author: request.body.author,
     url: request.body.url,
-    likes: request.body.likes || 0,
-    user: request.body.user.id
+    likes: request.body.likes || 0
   }
 
   const updated = await Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true,
     runValidators: true,
     context: 'query'
-  }).populate('user', { username: 1, name: 1 })
+  })
+    .populate('user', { username: 1, name: 1 })
+    .populate('comments', { comment: 1 })
+
   response.json(updated)
+})
+
+blogsRouter.post('/:id/comments', userExtractor, async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  if (!blog) {
+    response.status(404).end()
+  }
+
+  const comment = new Comment({
+    comment: request.body.comment,
+    blog: blog._id
+  })
+
+  const savedComment = await comment.save()
+  Comment.populate(savedComment, { path: 'blog' })
+  blog.comments = blog.comments.concat(savedComment._id)
+  await blog.save()
+  response.status(201).json(savedComment)
 })
 
 module.exports = blogsRouter

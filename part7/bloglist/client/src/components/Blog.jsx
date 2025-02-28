@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import { updateBlog, removeBlog } from '../reducers/blogReducer'
 import { showSuccess, showError } from '../reducers/notificationReducer'
+import Comments from './Comments'
 
 const Blog = () => {
   const { id } = useParams()
@@ -92,6 +93,8 @@ const Blog = () => {
         >
           remove
         </button>
+
+        <Comments blog={blog} />
       </div>
     </div>
   )
