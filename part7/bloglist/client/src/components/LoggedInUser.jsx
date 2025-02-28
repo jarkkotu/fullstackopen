@@ -9,12 +9,14 @@ const LoggedInUser = () => {
     dispatch(logout())
   }
 
+  if (!login) {
+    return null
+  }
+
   return (
-    <div>
-      <p>
-        {login.name} logged in <button onClick={onLogout}>logout</button>
-      </p>
-    </div>
+    <>
+      {login.name} logged in <button onClick={onLogout}>logout</button>
+    </>
   )
 }
 

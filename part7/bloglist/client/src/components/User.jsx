@@ -15,7 +15,6 @@ const User = () => {
       <p>added blogs</p>
       <ul>
         {user.blogs.map(blog => {
-          //console.log(blog)
           return <li key={blog.id}>{blog.title}</li>
         })}
       </ul>

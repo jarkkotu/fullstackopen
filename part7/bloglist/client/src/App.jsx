@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Routes, Route, Link, Navigate, useParams, useNavigate, useMatch } from 'react-router-dom'
 import Notifications from './components/Notifications'
+import Menu from './components/Menu'
 import Login from './components/Login'
 import Blogs from './components/Blogs'
 import Blog from './components/Blog'
@@ -46,6 +47,7 @@ const App = () => {
 
   return (
     <div>
+      <Menu />
       <Notifications />
       {login === null ? (
         <Login />

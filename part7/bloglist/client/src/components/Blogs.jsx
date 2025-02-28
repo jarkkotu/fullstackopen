@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm'
-import LoggedInUser from './LoggedInUser'
 
 const Blogs = () => {
   const togglableRef = useRef()
@@ -22,8 +21,6 @@ const Blogs = () => {
   return (
     <div>
       <h2>blogs</h2>
-
-      <LoggedInUser />
 
       <Togglable
         ref={togglableRef}
