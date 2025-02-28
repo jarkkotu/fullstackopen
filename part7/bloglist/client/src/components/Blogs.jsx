@@ -1,39 +1,22 @@
 import { useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { createBlog, updateBlog, removeBlog } from '../reducers/blogReducer'
-import { showSuccess, showError } from '../reducers/notificationReducer'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Togglable from './Togglable'
-import Blog from './Blog'
-import BlogCreate from './BlogCreate'
+import BlogForm from './BlogForm'
 import LoggedInUser from './LoggedInUser'
 
 const Blogs = () => {
-  const blogCreateRef = useRef()
+  const togglableRef = useRef()
+  const blogFormRef = useRef()
+
   const blogs = useSelector(state => state.blogs)
-  const dispatch = useDispatch()
 
-  const onCreateBlog = async blog => {
-    var newBlog = await dispatch(createBlog(blog))
-    blogCreateRef.current.toggleVisibility()
-    return newBlog
-  }
-
-  const onUpdateBlog = async blog => {
-    try {
-      const updatedBlog = await dispatch(updateBlog(blog))
-      dispatch(showSuccess(`Added like to blog ${updatedBlog.title} by ${updatedBlog.author}`))
-    } catch (error) {
-      dispatch(showError(`Adding a like failed: ${error.response.data.error}`))
-    }
-  }
-
-  const onRemoveBlog = async blog => {
-    try {
-      await dispatch(removeBlog(blog))
-      dispatch(showSuccess(`Removed blog ${blog.title} by ${blog.author}`))
-    } catch (error) {
-      dispatch(showError(`Removing the blog failed: ${error.response.data.error}`))
-    }
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
   }
 
   return (
@@ -43,10 +26,14 @@ const Blogs = () => {
       <LoggedInUser />
 
       <Togglable
+        ref={togglableRef}
         buttonLabel='new blog'
-        ref={blogCreateRef}
+        onAfterToggle={() => blogFormRef.current.clear()}
       >
-        <BlogCreate onCreateBlog={onCreateBlog} />
+        <BlogForm
+          ref={blogFormRef}
+          onAfterCreate={() => togglableRef.current.toggleVisibility()}
+        />
       </Togglable>
 
       <br />
@@ -54,12 +41,12 @@ const Blogs = () => {
       {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map(blog => (
-          <Blog
+          <div
+            style={blogStyle}
             key={blog.id}
-            blog={blog}
-            onUpdateBlog={onUpdateBlog}
-            onRemoveBlog={onRemoveBlog}
-          />
+          >
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </div>
         ))}
     </div>
   )

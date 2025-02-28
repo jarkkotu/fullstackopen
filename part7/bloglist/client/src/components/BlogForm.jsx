@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, forwardRef, useImperativeHandle } from 'react'
 import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
 import { showSuccess, showError } from '../reducers/notificationReducer'
 
-const BlogCreate = ({ onCreateBlog }) => {
+const BlogForm = forwardRef((props, refs) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -12,22 +13,23 @@ const BlogCreate = ({ onCreateBlog }) => {
     event.preventDefault()
 
     try {
-      // This throws error if fails
-      var newBlog = await onCreateBlog({ title, author, url })
-
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-
-      dispatch(
-        showSuccess(
-          `Created new blog; title: ${newBlog.title}, author: ${newBlog.author}, url: ${newBlog.url}`
-        )
-      )
+      var newBlog = await dispatch(createBlog({ title, author, url }))
+      dispatch(showSuccess(`Created new blog; title: ${title}, author: ${author}, url: ${url}`))
+      props.onAfterCreate()
     } catch (exception) {
       dispatch(showError(`Blog creation failed: ${exception.response.data.error}`))
     }
   }
+
+  const clear = () => {
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
+
+  useImperativeHandle(refs, () => {
+    return { clear }
+  })
 
   return (
     <div>
@@ -76,6 +78,6 @@ const BlogCreate = ({ onCreateBlog }) => {
       </form>
     </div>
   )
-}
+})
 
-export default BlogCreate
+export default BlogForm

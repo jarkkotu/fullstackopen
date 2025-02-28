@@ -4,6 +4,7 @@ import { Routes, Route, Link, Navigate, useParams, useNavigate, useMatch } from 
 import Notifications from './components/Notifications'
 import Login from './components/Login'
 import Blogs from './components/Blogs'
+import Blog from './components/Blog'
 import Users from './components/Users'
 import User from './components/User'
 import { initializeBlogs } from './reducers/blogReducer'
@@ -53,6 +54,10 @@ const App = () => {
           <Route
             path='/'
             element={<Blogs />}
+          />
+          <Route
+            path='/blogs/:id'
+            element={<Blog />}
           />
           <Route
             path='/users'

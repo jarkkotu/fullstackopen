@@ -1,22 +1,37 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useParams, useNavigate } from 'react-router-dom'
+import { updateBlog, removeBlog } from '../reducers/blogReducer'
+import { showSuccess, showError } from '../reducers/notificationReducer'
 
-const Blog = ({ blog, onUpdateBlog, onRemoveBlog }) => {
-  const [visible, setVisible] = useState(false)
+const Blog = () => {
+  const { id } = useParams()
   const login = useSelector(state => state.login)
+  const blog = useSelector(state => state.blogs).find(x => x.id === id)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const showWhenVisible = { display: visible ? '' : 'none' }
-  const buttonText = visible ? 'hide' : 'view'
-  const toggleVisibility = () => {
-    setVisible(!visible)
+  const onUpdateBlog = async () => {
+    try {
+      const newBlog = { ...blog, likes: blog.likes + 1 }
+      const updatedBlog = await dispatch(updateBlog(newBlog))
+      dispatch(showSuccess(`Added like to blog ${updatedBlog.title} by ${updatedBlog.author}`))
+    } catch (error) {
+      dispatch(showError(`Adding a like failed: ${error.response.data.error}`))
+    }
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
+  const onRemoveBlog = async () => {
+    try {
+      await dispatch(removeBlog(blog))
+      dispatch(showSuccess(`Removed blog '${blog.title}' by '${blog.author}'`))
+      navigate('/')
+    } catch (error) {
+      dispatch(showError(`Removing the blog failed: ${error.response.data.error}`))
+    }
+  }
+
+  if (!blog) {
+    return null
   }
 
   const removeButtonStyle = {
@@ -25,47 +40,55 @@ const Blog = ({ blog, onUpdateBlog, onRemoveBlog }) => {
   }
 
   return (
-    <div
-      id='outer-div'
-      style={blogStyle}
-    >
-      <span
+    <div>
+      <h2
         data-testid='title'
         id='title'
-        style={{ fontStyle: 'italic', marginRight: 10 }}
+        style={{ marginRight: 10 }}
       >
         {blog.title}
-      </span>
-      <span
+      </h2>
+      <h2
+        data-testid='author'
         id='author'
         style={{ marginRight: 10 }}
       >
         {blog.author}
-      </span>
-      <button
-        id='visibility-button'
-        onClick={toggleVisibility}
-      >
-        {buttonText}
-      </button>
-      <div
-        id='inner-div'
-        style={showWhenVisible}
-      >
-        <span id='url'>{blog.url}</span> <br />
-        <span id='likes'>likes {blog.likes}</span>
+      </h2>
+      <div>
+        <a
+          data-testid='url'
+          id='url'
+          href='{blog.url'
+        >
+          {blog.url}
+        </a>
+        <br />
+        <span
+          data-testid='likes'
+          id='likes'
+        >
+          likes {blog.likes}
+        </span>
         <button
+          data-testid='like-button'
           id='like-button'
-          onClick={() => onUpdateBlog({ ...blog, likes: blog.likes + 1 })}
+          onClick={onUpdateBlog}
         >
           like
-        </button>{' '}
+        </button>
         <br />
-        <span id='user-name'>{blog.user !== null ? blog.user.name : ''}</span> <br />
+        <span
+          data-testid='user-name'
+          id='user-name'
+        >
+          added by {blog.user !== null ? blog.user.name : ''}
+        </span>
+        <br />
         <button
           id='remove-button'
           style={removeButtonStyle}
-          onClick={() => onRemoveBlog(blog)}
+          onClick={onRemoveBlog}
         >
           remove
         </button>

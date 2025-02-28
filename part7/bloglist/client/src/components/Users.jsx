@@ -1,4 +1,3 @@
-//import { getAll } from '../services/users'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { initializeUsers } from '../reducers/userReducer'
