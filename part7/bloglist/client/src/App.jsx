@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Routes, Route, Link, Navigate, useParams, useNavigate, useMatch } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
+import { CssBaseline, Container } from '@mui/material'
 import Notifications from './components/Notifications'
 import Menu from './components/Menu'
 import Login from './components/Login'
@@ -8,9 +9,10 @@ import Blogs from './components/Blogs'
 import Blog from './components/Blog'
 import Users from './components/Users'
 import User from './components/User'
+import Footer from './components/Footer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
-import { showSuccess, showError } from './reducers/notificationReducer'
+import { showError } from './reducers/notificationReducer'
 import { initializeLogin } from './reducers/loginReducer'
 
 const App = () => {
@@ -46,40 +48,34 @@ const App = () => {
   }, [])
 
   return (
-    <div>
+    <Container>
+      <CssBaseline />
       <Menu />
       <Notifications />
-      {login === null ? (
-        <Login />
-      ) : (
-        <Routes>
-          <Route
-            path='/'
-            element={<Blogs />}
-          />
-          <Route
-            path='/blogs/:id'
-            element={<Blog />}
-          />
-          <Route
-            path='/users'
-            element={<Users />}
-          />
-          <Route
-            path='/users/:id'
-            element={<User />}
-          />
-        </Routes>
-      )}
-      <div>
-        <br></br>
-        Bloglist app by Jarkko Tuikka See{' '}
-        <a href='https://github.com/jarkkotu/fullstackopen'>
-          https://github.com/jarkkotu/fullstackopen
-        </a>{' '}
-        for the source code.
-      </div>
-    </div>
+      <Routes>
+        <Route
+          path='/'
+          element={<Login />}
+        />
+        <Route
+          path='/blogs'
+          element={<Blogs />}
+        />
+        <Route
+          path='/blogs/:id'
+          element={<Blog />}
+        />
+        <Route
+          path='/users'
+          element={<Users />}
+        />
+        <Route
+          path='/users/:id'
+          element={<User />}
+        />
+      </Routes>
+      <Footer />
+    </Container>
   )
 }
 

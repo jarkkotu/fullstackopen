@@ -1,5 +1,6 @@
 import { useState, forwardRef, useImperativeHandle } from 'react'
 import { useDispatch } from 'react-redux'
+import { Typography, TextField, Button, Box } from '@mui/material'
 import { createBlog } from '../reducers/blogReducer'
 import { showSuccess, showError } from '../reducers/notificationReducer'
 
@@ -33,48 +34,54 @@ const BlogForm = forwardRef((props, refs) => {
 
   return (
     <div>
-      <h2>create new</h2>
+      <Typography variant='h4'>create new</Typography>
       <form onSubmit={handleCreate}>
         <div>
-          title
-          <input
+          <TextField
+            margin='dense'
             type='text'
-            id='newTitle'
-            data-testid='newTitle'
-            name='title'
+            id='title'
+            data-testid='title'
+            label='title'
             value={title}
             onChange={({ target }) => setTitle(target.value)}
-          ></input>
+          />
         </div>
         <div>
-          author
-          <input
+          <TextField
+            margin='dense'
             type='text'
             id='newAuthor'
             data-testid='newAuthor'
-            name='author'
+            label='author'
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
-          ></input>
+          />
         </div>
         <div>
-          url
-          <input
+          <TextField
+            margin='dense'
             type='text'
             id='newUrl'
             data-testid='newUrl'
-            name='Url'
+            label='url'
             value={url}
             onChange={({ target }) => setUrl(target.value)}
-          ></input>
+          />
         </div>
 
-        <button
-          id='submit-button'
-          type='submit'
+        <Box
+          mt={1}
+          mb={1}
         >
-          create
-        </button>
+          <Button
+            id='submit-button'
+            variant='contained'
+            type='submit'
+          >
+            create
+          </Button>
+        </Box>
       </form>
     </div>
   )

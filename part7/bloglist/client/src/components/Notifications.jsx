@@ -10,7 +10,7 @@ const Notifications = () => {
   ))
 
   const style = {
-    //listStyleType: 'none',
+    listStyleType: 'none',
     padding: 0
   }
 

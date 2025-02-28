@@ -1,51 +1,83 @@
 import { useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+import {
+  Container,
+  Typography,
+  Button,
+  Box,
+  Paper,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell
+} from '@mui/material'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm'
 
 const Blogs = () => {
+  const navigate = useNavigate()
   const togglableRef = useRef()
   const blogFormRef = useRef()
-
+  const loggedIn = useSelector(state => state.login)
   const blogs = useSelector(state => state.blogs)
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
+  if (!loggedIn) {
+    navigate('/')
   }
 
   return (
-    <div>
-      <h2>blogs</h2>
-
-      <Togglable
-        ref={togglableRef}
-        buttonLabel='new blog'
-        onAfterToggle={() => blogFormRef.current.clear()}
+    <Container sx={{ mt: 0, mb: 2 }}>
+      <Box
+        display='flex'
+        justifyContent='center'
       >
-        <BlogForm
-          ref={blogFormRef}
-          onAfterCreate={() => togglableRef.current.toggleVisibility()}
-        />
-      </Togglable>
+        <Typography variant='h2'>blogs</Typography>
+      </Box>
+      <Box mb={1}>
+        <Togglable
+          ref={togglableRef}
+          buttonLabel='new blog'
+          onAfterToggle={() => blogFormRef.current.clear()}
+        >
+          <BlogForm
+            ref={blogFormRef}
+            onAfterCreate={() => togglableRef.current.toggleVisibility()}
+          />
+        </Togglable>
+      </Box>
 
-      <br />
-
-      {[...blogs]
-        .sort((a, b) => b.likes - a.likes)
-        .map(blog => (
-          <div
-            style={blogStyle}
-            key={blog.id}
-          >
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-          </div>
-        ))}
-    </div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead style={{ backgroundColor: 'lightblue', color: 'white' }}>
+            <TableRow>
+              <TableCell>Title</TableCell>
+              <TableCell>Author</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {[...blogs]
+              .sort((a, b) => b.likes - a.likes)
+              .map(blog => (
+                <TableRow key={blog.id}>
+                  <TableCell>
+                    <Button
+                      color='inherit'
+                      component={Link}
+                      to={`/blogs/${blog.id}`}
+                    >
+                      {blog.title}
+                    </Button>
+                  </TableCell>
+                  <TableCell>{blog.author}</TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   )
 }
 

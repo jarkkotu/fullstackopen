@@ -1,17 +1,22 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
+import { Typography, Button } from '@mui/material'
 import { updateBlog, removeBlog } from '../reducers/blogReducer'
 import { showSuccess, showError } from '../reducers/notificationReducer'
 import Comments from './Comments'
 
 const Blog = () => {
   const { id } = useParams()
-  const login = useSelector(state => state.login)
+  const loggedIn = useSelector(state => state.login)
   const blog = useSelector(state => state.blogs).find(x => x.id === id)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const onUpdateBlog = async () => {
+  if (!loggedIn) {
+    navigate('/')
+  }
+
+  const onLikeBlog = async () => {
     try {
       const newBlog = { ...blog, likes: blog.likes + 1 }
       const updatedBlog = await dispatch(updateBlog(newBlog))
@@ -36,63 +41,70 @@ const Blog = () => {
   }
 
   const removeButtonStyle = {
-    color: 'red',
-    display: blog.user !== null && login.username === blog.user.username ? '' : 'none'
+    display: blog.user !== null && loggedIn.username === blog.user.username ? '' : 'none'
   }
 
   return (
     <div>
-      <h2
+      <Typography
         data-testid='title'
         id='title'
-        style={{ marginRight: 10 }}
+        variant='h3'
       >
         {blog.title}
-      </h2>
-      <h2
+      </Typography>
+      <Typography
         data-testid='author'
         id='author'
-        style={{ marginRight: 10 }}
+        variant='h4'
       >
         {blog.author}
-      </h2>
-      <div>
-        <a
-          data-testid='url'
-          id='url'
-          href='{blog.url'
-        >
-          {blog.url}
+      </Typography>
+      <Typography
+        data-testid='url'
+        id='url'
+        variant='body1'
+      >
+        <a href={blog.url}>
+          <Button>{blog.url}</Button>
         </a>
-        <br />
-        <span
+      </Typography>
+      <div>
+        <Typography
           data-testid='likes'
           id='likes'
+          variant='body1'
         >
-          likes {blog.likes}
-        </span>
-        <button
-          data-testid='like-button'
-          id='like-button'
-          onClick={onUpdateBlog}
-        >
-          like
-        </button>
-        <br />
-        <span
+          {blog.likes} likes{' '}
+          <Button
+            data-testid='like-button'
+            id='like-button'
+            onClick={onLikeBlog}
+            variant='contained'
+            size='small'
+          >
+            like
+          </Button>
+        </Typography>
+        <Typography
+          mt={1}
+          mb={1}
           data-testid='user-name'
           id='user-name'
+          variant='body2'
         >
           added by {blog.user !== null ? blog.user.name : ''}
-        </span>
-        <br />
-        <button
+        </Typography>
+        <Button
           id='remove-button'
+          data-testid='remove-button'
           style={removeButtonStyle}
+          variant='contained'
+          color='error'
           onClick={onRemoveBlog}
         >
           remove
-        </button>
+        </Button>
 
         <Comments blog={blog} />
       </div>
