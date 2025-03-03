@@ -1,0 +1,22 @@
+{
+  "name": "library-backend",
+  "version": "1.0.0",
+  "description": "fullstack open, part 8 exercises, library backend",
+  "license": "ISC",
+  "author": "jarkko tuikka",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "test"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "graphql": "^16.10.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
