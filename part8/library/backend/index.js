@@ -1,192 +1,84 @@
 const { ApolloServer } = require("@apollo/server");
-const { startStandaloneServer } = require("@apollo/server/standalone");
-const { GraphQLError } = require("graphql");
-const { v1: uuid } = require("uuid");
+const { ApolloServerPluginDrainHttpServer } = require("@apollo/server/plugin/drainHttpServer");
+const { expressMiddleware } = require("@apollo/server/express4");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 
-let authors = [
-  {
-    name: "Robert Martin",
-    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
-    born: 1952,
-  },
-  {
-    name: "Martin Fowler",
-    id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
-    born: 1963,
-  },
-  {
-    name: "Fyodor Dostoevsky",
-    id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
-    born: 1821,
-  },
-  {
-    name: "Joshua Kerievsky", // birthyear not known
-    id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
-  },
-  {
-    name: "Sandi Metz", // birthyear not known
-    id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
-  },
-];
+const { WebSocketServer } = require("ws");
+const { useServer } = require("graphql-ws/use/ws");
 
-let books = [
-  {
-    title: "Clean Code",
-    published: 2008,
-    author: "Robert Martin",
-    id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
-    genres: ["refactoring"],
-  },
-  {
-    title: "Agile software development",
-    published: 2002,
-    author: "Robert Martin",
-    id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
-    genres: ["agile", "patterns", "design"],
-  },
-  {
-    title: "Refactoring, edition 2",
-    published: 2018,
-    author: "Martin Fowler",
-    id: "afa5de00-344d-11e9-a414-719c6709cf3e",
-    genres: ["refactoring"],
-  },
-  {
-    title: "Refactoring to patterns",
-    published: 2008,
-    author: "Joshua Kerievsky",
-    id: "afa5de01-344d-11e9-a414-719c6709cf3e",
-    genres: ["refactoring", "patterns"],
-  },
-  {
-    title: "Practical Object-Oriented Design, An Agile Primer Using Ruby",
-    published: 2012,
-    author: "Sandi Metz",
-    id: "afa5de02-344d-11e9-a414-719c6709cf3e",
-    genres: ["refactoring", "design"],
-  },
-  {
-    title: "Crime and punishment",
-    published: 1866,
-    author: "Fyodor Dostoevsky",
-    id: "afa5de03-344d-11e9-a414-719c6709cf3e",
-    genres: ["classic", "crime"],
-  },
-  {
-    title: "Demons",
-    published: 1872,
-    author: "Fyodor Dostoevsky",
-    id: "afa5de04-344d-11e9-a414-719c6709cf3e",
-    genres: ["classic", "revolution"],
-  },
-];
+const http = require("http");
+const express = require("express");
+const cors = require("cors");
 
-const typeDefs = `
-  type Author {
-    name: String!
-    id: ID!
-    born: Int,
-    bookCount: Int!
-  }
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
-  type Book {
-    title: String!
-    published: Int!,
-    author: String!,
-    id: ID!,
-    genres: [String!]!
-  }
+const typeDefs = require("./schema");
+const resolvers = require("./resolvers");
+const User = require("./models/user");
 
-  type Query {
-    bookCount(author: String, genre: String): Int!,
-    authorCount: Int!,
-    allBooks(author: String, genre: String): [Book!]!,
-    allAuthors: [Author!]!
-  }
+require("dotenv").config();
 
-  type Mutation {
-    addBook(
-      title: String!
-      author: String!
-      published: Int!
-      genres: [String!]!
-    ): Book,
-    editAuthor(
-      name: String!
-      setBornTo: Int!
-    ): Author
-  }
-`;
+mongoose.set("strictQuery", false);
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("connected to MongoDB");
+  })
+  .catch((error) => {
+    console.log("error connection to MongoDB:", error.message);
+  });
 
-const resolvers = {
-  Author: {
-    bookCount: (root, args) => {
-      return books.filter((b) => b.author === root.name).length;
-    },
-  },
-  Query: {
-    bookCount: (root, args) => {
-      let ret = books;
-      if (args.author) {
-        ret = ret.filter((b) => b.author === args.author);
-      }
-      if (args.genre) {
-        ret = ret.filter((b) => b.genres.includes(args.genre));
-      }
-      return ret.length;
-    },
-    authorCount: () => authors.length,
-    allBooks: (root, args) => {
-      let ret = books;
-      if (args.author) {
-        ret = ret.filter((b) => b.author === args.author);
-      }
-      if (args.genre) {
-        ret = ret.filter((b) => b.genres.includes(args.genre));
-      }
-      return ret;
-    },
-    allAuthors: () => authors,
-  },
-  Mutation: {
-    addBook: (root, args) => {
-      if (books.find((b) => b.title === args.title)) {
-        throw new GraphQLError("Name must be unique", {
-          extensions: {
-            code: "BAD_USER_INPUT",
-            invalidArgs: args.title,
-          },
-        });
-      }
+const start = async () => {
+  const app = express();
+  const httpServer = http.createServer(app);
 
-      if (!authors.find((a) => a.name === args.author)) {
-        authors = authors.concat({ name: args.author, id: uuid() });
-      }
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: "/",
+  });
 
-      const book = { ...args, id: uuid() };
-      books = books.concat(book);
-      return book;
-    },
-    editAuthor: (root, args) => {
-      const author = authors.find((a) => a.name === args.name);
-      if (!author) {
-        return null;
-      }
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const serverCleanup = useServer({ schema }, wsServer);
 
-      const updatedAuthor = { ...author, born: args.setBornTo };
-      authors = authors.map((a) => (a.name === args.name ? updatedAuthor : a));
-      return updatedAuthor;
-    },
-  },
+  const apolloServer = new ApolloServer({
+    schema,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
+  });
+
+  await apolloServer.start();
+
+  app.use(
+    "/",
+    cors(),
+    express.json(),
+    expressMiddleware(apolloServer, {
+      context: async ({ req }) => {
+        const auth = req ? req.headers.authorization : null;
+        const bearer = "Bearer ";
+        if (auth && auth.startsWith(bearer)) {
+          const decodedToken = jwt.verify(auth.substring(bearer.length), process.env.JWT_SECRET);
+          const currentUser = await User.findById(decodedToken.id);
+          return { currentUser };
+        }
+      },
+    })
+  );
+
+  httpServer.listen(process.env.PORT, () =>
+    console.log(`Server is now running on http://localhost:${process.env.PORT}`)
+  );
 };
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
-
-startStandaloneServer(server, {
-  listen: { port: 4000 },
-}).then(({ url }) => {
-  console.log(`Server ready at ${url}`);
-});
+start();
