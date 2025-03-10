@@ -1,4 +1,8 @@
 export const calculateBmi = (heightInCentimeters: number, mass: number): string => {
+  if (isNaN(heightInCentimeters) || isNaN(mass)) {
+    throw new Error("Provided values were not numbers!");
+  }
+
   var heightInMeters = heightInCentimeters / 100;
   const bmi = mass / Math.pow(heightInMeters, 2);
   const bmiPrime = bmi / 25.0;
@@ -25,9 +29,6 @@ export const parseArgs = (args: Array<string>): BmiCalculatorArgs => {
 
   const heightInCentimeters = Number(args[2]);
   const mass = Number(args[3]);
-  if (isNaN(heightInCentimeters) || isNaN(mass)) {
-    throw new Error("Provided values were not numbers!");
-  }
 
   return {
     heightInCentimeters: heightInCentimeters,
