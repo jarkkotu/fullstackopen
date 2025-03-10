@@ -1,0 +1,17 @@
+{
+  "name": "first-steps",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "jarkko tuikka",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "calculateBmi": "ts-node bmiCalculator.ts",
+    "calculateExercises": "ts-node exerciseCalculator.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
