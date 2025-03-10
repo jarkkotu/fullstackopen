@@ -31,6 +31,16 @@ const getRatingDescription = (rating: number): string => {
 };
 
 export const calculateExercises = (dailyExerciseHours: Array<number>, target: number): CalculateExercisesResult => {
+  if (isNaN(target)) {
+    throw new Error("Provided target was not a number");
+  }
+
+  dailyExerciseHours.forEach((x, i) => {
+    if (isNaN(x)) {
+      throw new Error(`Day ${i + 1} exercise hours '(${x})' was not a number`);
+    }
+  });
+
   const periodLength = dailyExerciseHours.length;
   const trainingDays = dailyExerciseHours.filter((x) => x > 0).length;
   const exerciseHours = dailyExerciseHours.reduce((acc, curr) => acc + curr, 0);
@@ -51,31 +61,23 @@ export const calculateExercises = (dailyExerciseHours: Array<number>, target: nu
   };
 };
 
-export interface ExerciseArgs {
+interface ExerciseArgs {
   target: number;
   dailyExerciseHours: Array<number>;
 }
 
-export const parseArgs = (args: Array<string>): ExerciseArgs => {
+const parseArgs = (args: Array<string>): ExerciseArgs => {
   if (args.length < 4) {
     throw new Error("Usage: <target> <day-1-exercisehours> ... <day-n-exercisehours");
   }
 
   const target = Number(args[2]);
-  if (isNaN(target)) {
-    throw new Error("Provided target was not a number");
-  }
 
   const dailyExerciseHours = new Array<number>();
   let i = 3;
   while (i < args.length) {
     const hours = Number(args[i]);
-    if (isNaN(hours)) {
-      throw new Error(`Day ${i - 2} exercise hours '(${args[i]})' was not a number`);
-    }
-
     dailyExerciseHours.push(hours);
-
     i++;
   }
 

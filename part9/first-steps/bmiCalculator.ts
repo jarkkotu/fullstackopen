@@ -3,7 +3,7 @@ export const calculateBmi = (heightInCentimeters: number, mass: number): string 
     throw new Error("Provided values were not numbers!");
   }
 
-  var heightInMeters = heightInCentimeters / 100;
+  const heightInMeters = heightInCentimeters / 100;
   const bmi = mass / Math.pow(heightInMeters, 2);
   const bmiPrime = bmi / 25.0;
   const bmiPrimeRounded = Math.round(bmiPrime * 100) / 100;
