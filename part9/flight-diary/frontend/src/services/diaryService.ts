@@ -1,15 +1,14 @@
 import axios from "axios";
-import { NonSensitiveDiaryEntry, NewDiaryEntry } from "../types";
+import { NewDiaryEntry, DiaryEntry } from "../types";
 import { apiBaseUrl } from "../constants";
 
 const getAll = async () => {
-  const { data } = await axios.get<NonSensitiveDiaryEntry[]>(`${apiBaseUrl}/diaries`);
+  const { data } = await axios.get<DiaryEntry[]>(`${apiBaseUrl}/diaries`);
   return data;
 };
 
 const create = async (object: NewDiaryEntry) => {
-  const { data } = await axios.post<NonSensitiveDiaryEntry>(`${apiBaseUrl}/diaries`, object);
-
+  const { data } = await axios.post<DiaryEntry>(`${apiBaseUrl}/diaries`, object);
   return data;
 };
 

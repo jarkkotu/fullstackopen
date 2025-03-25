@@ -1,7 +1,7 @@
-import { NonSensitiveDiaryEntry } from "../types";
+import { DiaryEntry } from "../types";
 
 interface DiaryProps {
-  diary: NonSensitiveDiaryEntry;
+  diary: DiaryEntry;
 }
 
 const Diary = (props: DiaryProps) => {
@@ -12,6 +12,8 @@ const Diary = (props: DiaryProps) => {
       visibility: {props.diary.visibility}
       <br />
       weather: {props.diary.weather}
+      <br />
+      comment: {props.diary.comment}
     </div>
   );
 };
