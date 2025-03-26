@@ -1,8 +1,9 @@
-import { Gender, Patient } from "../../types";
+import { Gender, Patient, Diagnosis } from "../../types";
 import { Female, Male, Transgender } from "@mui/icons-material";
+import EntryList from "./EntryList";
 
 interface GenderIconProps {
-  gender: Gender
+  gender: Gender,
 }
 
 const GenderIcon = ({ gender } : GenderIconProps) => {
@@ -17,10 +18,11 @@ const GenderIcon = ({ gender } : GenderIconProps) => {
 }
 
 interface Props {
-  patient?: Patient
+  patient?: Patient,
+  diagnoses: Diagnosis[]
 }
 
-const PatientPage = ({ patient } : Props) => {
+const PatientPage = ({ patient, diagnoses } : Props) => {
 
   if (!patient) {
     return (<div>undefined</div>)
@@ -33,7 +35,7 @@ const PatientPage = ({ patient } : Props) => {
       <br/>
       occupation: {patient.occupation}
       <br/>
-      
+      <EntryList entries={patient.entries} diagnoses={diagnoses}/> 
     </div>
   )
 }
