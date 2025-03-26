@@ -32,6 +32,8 @@ const PatientPage = ({ patient } : Props) => {
       ssn: {patient.ssn}
       <br/>
       occupation: {patient.occupation}
+      <br/>
+      
     </div>
   )
 }
