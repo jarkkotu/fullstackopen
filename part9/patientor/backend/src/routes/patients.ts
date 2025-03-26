@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import patientsService from "../services/patientsService";
-import { NonSensitivePatient, NewPatient } from "../types";
+import { NonSensitivePatient, NewPatient, Patient } from "../types";
 import { NewPatientSchema } from "../utils";
 import { z } from "zod";
 
@@ -28,7 +28,7 @@ router.get("/", (_req, res: Response<NonSensitivePatient[]>) => {
   res.send(patients);
 });
 
-router.get("/:id", (req, res: Response<NonSensitivePatient>) => {
+router.get("/:id", (req, res: Response<Patient>) => {
   const patient = patientsService.getNonSensitivePatientById(String(req.params.id));
   if (patient) {
     res.send(patient);
