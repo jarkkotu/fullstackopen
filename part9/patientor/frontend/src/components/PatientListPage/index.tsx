@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBody } from '@mui/material';
 import axios from 'axios';
 
@@ -46,7 +47,7 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
       }
     }
   };
-
+  
   return (
     <div className="App">
       <Box>
@@ -66,7 +67,15 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
         <TableBody>
           {Object.values(patients).map((patient: Patient) => (
             <TableRow key={patient.id}>
-              <TableCell>{patient.name}</TableCell>
+              <TableCell>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to={`/patients/${patient.id}`}
+                >
+                  {patient.name}
+                </Button>
+                </TableCell>
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>

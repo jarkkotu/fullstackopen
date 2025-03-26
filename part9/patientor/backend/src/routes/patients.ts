@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import patientsService from "../services/patientsService";
-import { NonSensitivePatient, NewPatient, Patient } from "../types";
+import { NewPatient, Patient } from "../types";
 import { NewPatientSchema } from "../utils";
 import { z } from "zod";
 
@@ -23,13 +23,13 @@ const errorMiddleware = (error: unknown, _req: Request, res: Response, next: Nex
   }
 };
 
-router.get("/", (_req, res: Response<NonSensitivePatient[]>) => {
-  const patients = patientsService.getNonSensitivePatients();
+router.get("/", (_req, res: Response<Patient[]>) => {
+  const patients = patientsService.getPatients();
   res.send(patients);
 });
 
 router.get("/:id", (req, res: Response<Patient>) => {
-  const patient = patientsService.getNonSensitivePatientById(String(req.params.id));
+  const patient = patientsService.getPatientById(String(req.params.id));
   if (patient) {
     res.send(patient);
   } else {
@@ -37,7 +37,7 @@ router.get("/:id", (req, res: Response<Patient>) => {
   }
 });
 
-router.post("/", newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<NonSensitivePatient>) => {
+router.post("/", newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<Patient>) => {
   const newPatient = NewPatientSchema.parse(req.body);
   const addedPatient = patientsService.addPatient(newPatient);
   res.json(addedPatient);
