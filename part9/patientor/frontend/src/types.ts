@@ -13,6 +13,12 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3,
 }
 
+export enum EntryType {
+  HealthCheck = "HealthCheck",
+  OccupationalHealthcare = "OccupationalHealthcare",
+  Hospital = "Hospital"
+}
+
 export const DiagnosisSchema = z.object({
   code: z.string(),
   name: z.string(),
@@ -63,6 +69,29 @@ export type HospitalEntry = z.infer<typeof HospitalEntrySchema>;
 
 export type Entry = z.infer<typeof EntrySchema>;
 
+export const NewHealthCheckEntrySchema = HealthCheckEntrySchema.omit({
+  id: true,
+});
+
+export const NewOccupationalHealthcareEntrySchema = OccupationalHealthcareEntrySchema.omit({
+  id: true,
+});
+
+export const NewHospitalEntrySchema = HospitalEntrySchema.omit({
+  id: true,
+});
+
+export const NewEntrySchema = z.union([
+  NewHealthCheckEntrySchema,
+  NewOccupationalHealthcareEntrySchema,
+  NewHospitalEntrySchema,
+]);
+
+export type NewHealthCheckEntry = z.infer<typeof NewHealthCheckEntrySchema>;
+export type NewOccupationalHealthcareEntry = z.infer<typeof NewOccupationalHealthcareEntrySchema>;
+export type NewHospitalEntry = z.infer<typeof NewHospitalEntrySchema>;
+export type NewEntry = z.infer<typeof NewEntrySchema>;
+
 export const PatientSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -70,7 +99,7 @@ export const PatientSchema = z.object({
   gender: z.nativeEnum(Gender),
   ssn: z.string().optional(),
   dateOfBirth: z.string().date().optional(),
-  entries: z.array(EntrySchema),
+  entries: z.array(EntrySchema).optional(),
 });
 
 export type Patient = z.infer<typeof PatientSchema>;

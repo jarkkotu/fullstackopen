@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Link, Routes, useMatch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import { Button, Divider, Container, Typography } from '@mui/material';
 
 import { apiBaseUrl } from "./constants";
@@ -32,11 +32,6 @@ const App = () => {
     void fetchDiagnosesList();
   }, []);
 
-  const patientsMatch = useMatch('/patients/:id')
-  const patient = patientsMatch 
-    ? patients.find(p => p.id === patientsMatch.params.id)
-    : undefined
-  
   return (
     <div className="App">
       <Container>
@@ -49,7 +44,7 @@ const App = () => {
         <Divider hidden />
         <Routes>
           <Route path="/" element={<PatientListPage patients={patients} setPatients={setPatients} />} />
-          <Route path="/patients/:id" element={<PatientPage patient={patient} diagnoses={diagnoses} />} />
+          <Route path="/patients/:id" element={<PatientPage patients={patients} setPatients={setPatients} diagnoses={diagnoses} />} />
         </Routes>
       </Container>
     </div>

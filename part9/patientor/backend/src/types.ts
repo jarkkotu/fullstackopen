@@ -63,6 +63,31 @@ export type HospitalEntry = z.infer<typeof HospitalEntrySchema>;
 
 export type Entry = z.infer<typeof EntrySchema>;
 
+// // Define special omit for unions
+// type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+// // Define Entry without the 'id' property
+// type EntryWithoutId = UnionOmit<Entry, 'id'>;
+
+export const NewHealthCheckEntrySchema = HealthCheckEntrySchema.omit({
+  id: true,
+});
+
+export const NewOccupationalHealthcareEntrySchema = OccupationalHealthcareEntrySchema.omit({
+  id: true,
+});
+
+export const NewHospitalEntrySchema = HospitalEntrySchema.omit({
+  id: true,
+});
+
+export const NewEntrySchema = z.union([
+  NewHealthCheckEntrySchema,
+  NewOccupationalHealthcareEntrySchema,
+  NewHospitalEntrySchema,
+]);
+
+export type NewEntry = z.infer<typeof NewEntrySchema>;
+
 export const PatientSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -83,3 +108,5 @@ export const NewPatientSchema = PatientSchema.omit({
 export type NewPatient = z.infer<typeof NewPatientSchema>;
 
 export type NonSensitivePatient = Omit<Patient, "ssn" | "entries">;
+
+export type PatientFormValues = Omit<Patient, "id" | "entries">;
