@@ -19,6 +19,7 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
+    files: ["**/*.js", "**/*.jsx"],
     extends: [
       compat.extends("eslint:recommended", "plugin:react/recommended"),
       prettierConfig
