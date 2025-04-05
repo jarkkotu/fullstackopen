@@ -8,6 +8,7 @@ import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
 import prettier from "eslint-plugin-prettier";
 import prettierConfig from "eslint-config-prettier";
+const globals = require('globals');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,6 +35,7 @@ export default defineConfig([
     languageOptions: {
       globals: {
         ...reactNative.environments["react-native"]["react-native"],
+        ...globals.node,
       },
       parser: babelParser,
       parserOptions: {

@@ -1,48 +1,109 @@
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
+import Text from "./Text";
 
 const styles = StyleSheet.create({
-  container: {},
-  rowContainer: {
+  container0: {
+    display: "flex",
+    flexDirection: "column",
+    padding: 10,
+    backgroundColor: "white",
+  },
+  container1: {
+    display: "flex",
     flexDirection: "row",
   },
-  label: {
-    marginRight: 5,
+  container2: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    paddingLeft: 5,
+    paddingRight: 5,
   },
-  text: {},
+  container3: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    paddingTop: 10,
+  },
+  numberContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  language: {
+    fontWeight: "normal",
+    color: "#ffffff",
+    fontSize: 14,
+    backgroundColor: "#0366d6",
+    marginBottom: 5,
+    padding: 5,
+    borderRadius: 5,
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 5,
+    marginRight: 10,
+  },
 });
 
-const RepositoryItem = ({ repository }) => {
-  const { fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount } = repository;
+const formatNumber = (number) => {
+  if (number >= 1000) {
+    return `${(number / 1000).toFixed(1)}k`;
+  }
+  return number.toString();
+};
 
+const NumberContainer = ({ title, number }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.rowContainer}>
-        <Text style={styles.label}>Full name:</Text>
-        <Text style={styles.text}>{fullName}</Text>
+    <View style={styles.numberContainer}>
+      <Text fontWeight="bold">{formatNumber(number)}</Text>
+      <Text color="textSecondary">{title}</Text>
+    </View>
+  );
+};
+
+const RepositoryItem = ({ repository }) => {
+  return (
+    <View style={styles.container0}>
+      <View style={styles.container1}>
+        <Image
+          style={styles.avatar}
+          source={{ uri: repository.ownerAvatarUrl }}
+        />
+        <View style={styles.container2}>
+          <Text
+            fontWeight="bold"
+            fontSize="subheading"
+            style={{ marginBottom: 5 }}
+          >
+            {repository.fullName}
+          </Text>
+          <Text
+            color="textSecondary"
+            style={{ marginBottom: 5 }}
+          >
+            {repository.description}
+          </Text>
+          <Text style={styles.language}>{repository.language}</Text>
+        </View>
       </View>
-      <View style={styles.rowContainer}>
-        <Text style={styles.label}>Description</Text>
-        <Text style={styles.text}>{description}</Text>
-      </View>
-      <View style={styles.rowContainer}>
-        <Text style={styles.label}>Language</Text>
-        <Text style={styles.text}>{language}</Text>
-      </View>
-      <View style={styles.rowContainer}>
-        <Text style={styles.label}>Start</Text>
-        <Text style={styles.text}>{stargazersCount}</Text>
-      </View>
-      <View style={styles.rowContainer}>
-        <Text style={styles.label}>Forks count</Text>
-        <Text style={styles.text}>{forksCount}</Text>
-      </View>
-      <View style={styles.rowContainer}>
-        <Text style={styles.label}>Reviews</Text>
-        <Text style={styles.text}>{reviewCount}</Text>
-      </View>
-      <View style={styles.rowContainer}>
-        <Text style={styles.label}>Rating</Text>
-        <Text style={styles.text}>{ratingAverage}</Text>
+      <View style={styles.container3}>
+        <NumberContainer
+          title="Stars"
+          number={repository.stargazersCount}
+        />
+        <NumberContainer
+          title="Forks"
+          number={repository.forksCount}
+        />
+        <NumberContainer
+          title="Reviews"
+          number={repository.reviewCount}
+        />
+        <NumberContainer
+          title="Rating"
+          number={repository.ratingAverage}
+        />
       </View>
     </View>
   );
