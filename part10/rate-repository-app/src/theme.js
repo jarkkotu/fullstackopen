@@ -1,5 +1,6 @@
 const theme = {
   colors: {
+    mainBackground: "#e1e4e8",
     appBarBackground: "#24292e",
 
     textPrimary: "#24292e",
