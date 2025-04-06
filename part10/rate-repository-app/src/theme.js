@@ -8,6 +8,8 @@ const theme = {
     primary: "#0366d6",
     textInputBorder: "#e1e4e8",
     textInputBackground: "#ffffff",
+    textInputError: "#d73a4a",
+    textInputErrorBorder: "#d73a4a",
   },
   fontSizes: {
     body: 14,
