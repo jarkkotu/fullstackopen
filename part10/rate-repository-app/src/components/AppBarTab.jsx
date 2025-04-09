@@ -24,16 +24,29 @@ const styles = StyleSheet.create({
   },
 });
 
-const AppBarTab = ({ title, route }) => {
+const AppBarTab = ({ title, route, onPress }) => {
+  const handlePress = async () => {
+    console.log(`${title} pressed`);
+    if (onPress) {
+      await onPress();
+    }
+  };
+
+  const isLink = Boolean(route);
+
   return (
     <View style={styles.container}>
       <Pressable
-        onPress={() => console.log(`${title} pressed`)}
+        onPress={handlePress}
         style={({ pressed }) => [styles.pressable, pressed && styles.pressablePressed]}
       >
-        <Link to={route}>
+        {isLink ? (
+          <Link to={route}>
+            <Text style={styles.text}>{title}</Text>
+          </Link>
+        ) : (
           <Text style={styles.text}>{title}</Text>
-        </Link>
+        )}
       </Pressable>
     </View>
   );
