@@ -79,7 +79,7 @@ const validationSchema = yup.object().shape({
   password: yup.string().required().min(1),
 });
 
-const SignInForm = ({ onSubmit }) => {
+export const SignInForm = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,

@@ -46,14 +46,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const formatNumber = (number) => {
+export const formatNumber = (number) => {
   if (number >= 1000) {
     return `${(number / 1000).toFixed(1)}k`;
   }
   return number.toString();
 };
 
-const NumberContainer = ({ title, number }) => {
+export const NumberContainer = ({ title, number }) => {
   return (
     <View style={styles.numberContainer}>
       <Text fontWeight="bold">{formatNumber(number)}</Text>
@@ -64,7 +64,10 @@ const NumberContainer = ({ title, number }) => {
 
 const RepositoryItem = ({ repository }) => {
   return (
-    <View style={styles.container0}>
+    <View
+      testID="repositoryItem"
+      style={styles.container0}
+    >
       <View style={styles.container1}>
         <Image
           style={styles.avatar}
