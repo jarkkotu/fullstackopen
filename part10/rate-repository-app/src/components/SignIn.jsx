@@ -2,6 +2,7 @@ import { StyleSheet, View, Pressable } from "react-native";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Text from "./Text";
+import Button from "./Button";
 import TextInput from "./TextInput";
 import theme from "../theme";
 import useSignIn from "../hooks/useSignIn";
@@ -41,20 +42,6 @@ const styles = StyleSheet.create({
 
   textInputError: {
     borderColor: theme.colors.textInputErrorBorder,
-  },
-
-  button: {
-    backgroundColor: theme.colors.primary,
-    padding: 10,
-    borderRadius: 5,
-  },
-
-  buttonText: {
-    fontFamily: theme.fonts.main,
-    fontSize: theme.fontSizes.body,
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
   },
 
   validationText: {
@@ -112,12 +99,10 @@ export const SignInForm = ({ onSubmit }) => {
         )}
       </View>
       <View style={styles.innerContainer}>
-        <Pressable
-          style={styles.button}
+        <Button
           onPress={formik.handleSubmit}
-        >
-          <Text style={styles.buttonText}>Sign in</Text>
-        </Pressable>
+          title="Sign in"
+        />
       </View>
     </View>
   );

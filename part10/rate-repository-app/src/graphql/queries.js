@@ -22,3 +22,13 @@ export const ME = gql`
     }
   }
 `;
+
+export const GET_REPOSITORY = gql`
+  query ($id: ID!) {
+    repository(id: $id) {
+      id
+      fullName
+      url
+    }
+  }
+`;

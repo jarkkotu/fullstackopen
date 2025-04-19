@@ -1,5 +1,7 @@
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, Linking } from "react-native";
 import Text from "./Text";
+import Button from "./Button";
+import theme from "../theme";
 
 const styles = StyleSheet.create({
   container0: {
@@ -25,6 +27,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     paddingTop: 10,
   },
+  container4: {
+    display: "flex",
+    flexDirection: "row",
+    paddingTop: 10,
+  },
   numberContainer: {
     flexDirection: "column",
     alignItems: "center",
@@ -33,7 +40,7 @@ const styles = StyleSheet.create({
     fontWeight: "normal",
     color: "#ffffff",
     fontSize: 14,
-    backgroundColor: "#0366d6",
+    backgroundColor: theme.colors.primary,
     marginBottom: 5,
     padding: 5,
     borderRadius: 5,
@@ -62,7 +69,7 @@ export const NumberContainer = ({ title, number }) => {
   );
 };
 
-const RepositoryItem = ({ repository }) => {
+const RepositoryItem = ({ repository, showUrl }) => {
   return (
     <View
       testID="repositoryItem"
@@ -108,6 +115,14 @@ const RepositoryItem = ({ repository }) => {
           number={repository.ratingAverage}
         />
       </View>
+      {showUrl && (
+        <View style={styles.container4}>
+          <Button
+            onPress={() => Linking.openURL(repository.url)}
+            title="Open in GitHub"
+          />
+        </View>
+      )}
     </View>
   );
 };
