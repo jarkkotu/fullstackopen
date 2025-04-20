@@ -69,7 +69,7 @@ export const NumberContainer = ({ title, number }) => {
   );
 };
 
-const RepositoryItem = ({ repository, showUrl }) => {
+const RepositoryInfo = ({ repository, showUrl }) => {
   return (
     <View
       testID="repositoryItem"
@@ -126,4 +126,4 @@ const RepositoryItem = ({ repository, showUrl }) => {
     </View>
   );
 };
-export default RepositoryItem;
+export default RepositoryInfo;

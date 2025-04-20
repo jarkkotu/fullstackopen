@@ -4,7 +4,7 @@ import theme from "../theme";
 import AppBar from "./AppBar";
 import SignIn from "./SignIn";
 import RepositoryList from "./RepositoryList";
-import RepositoryItemLoader from "./RepositoryItemLoader";
+import Repository from "./Repository";
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +25,7 @@ const Main = () => {
         />
         <Route
           path="/repository/:id"
-          element={<RepositoryItemLoader />}
+          element={<Repository />}
         />
         <Route
           path="/signin"
