@@ -24,6 +24,8 @@ const AppBar = () => {
   const apolloClient = useApolloClient();
   const { data } = useQuery(ME);
 
+  const isAuthorized = data && data.me;
+
   const handleSignOut = async () => {
     await authStorage.removeAccessToken();
     await apolloClient.resetStore();
@@ -36,7 +38,17 @@ const AppBar = () => {
         showsHorizontalScrollIndicator={false}
         style={{ flexGrow: 0 }}
       >
-        {data && data.me ? (
+        <AppBarTab
+          title="Repositories"
+          route="/"
+        />
+        {isAuthorized && (
+          <AppBarTab
+            title="Create a review"
+            route="/createreview"
+          />
+        )}
+        {isAuthorized ? (
           <AppBarTab
             title="SignOut"
             onPress={handleSignOut}
@@ -47,10 +59,6 @@ const AppBar = () => {
             route="/signin"
           />
         )}
-        <AppBarTab
-          title="Repositories"
-          route="/"
-        />
       </ScrollView>
     </View>
   );

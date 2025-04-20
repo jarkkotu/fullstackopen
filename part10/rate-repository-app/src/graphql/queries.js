@@ -26,8 +26,7 @@ export const ME = gql`
 export const GET_REPOSITORY = gql`
   query ($id: ID!) {
     repository(id: $id) {
-      id
-      fullName
+      ...RepositoryList
       url
       reviews {
         edges {
@@ -45,4 +44,5 @@ export const GET_REPOSITORY = gql`
       }
     }
   }
+  ${REPOSITORY_LIST}
 `;

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Text from "./Text";
