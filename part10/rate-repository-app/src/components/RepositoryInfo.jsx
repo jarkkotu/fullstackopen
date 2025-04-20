@@ -1,7 +1,7 @@
 import { View, StyleSheet, Image, Linking } from "react-native";
 import Text from "./Text";
 import Button from "./Button";
-import theme from "../theme";
+import theme from "../styles/theme";
 
 const styles = StyleSheet.create({
   container0: {

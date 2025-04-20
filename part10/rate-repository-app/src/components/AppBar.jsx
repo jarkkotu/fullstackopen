@@ -1,6 +1,6 @@
 import { StyleSheet, View, ScrollView } from "react-native";
 import Constants from "expo-constants";
-import theme from "../theme";
+import theme from "../styles/theme";
 import AppBarTab from "./AppBarTab";
 import { useQuery } from "@apollo/client";
 import { ME } from "../graphql/queries";
@@ -50,13 +50,19 @@ const AppBar = () => {
         )}
         {isAuthorized ? (
           <AppBarTab
-            title="SignOut"
+            title="Sign out"
             onPress={handleSignOut}
           />
         ) : (
           <AppBarTab
-            title="SignIn"
+            title="Sign in"
             route="/signin"
+          />
+        )}
+        {!isAuthorized && (
+          <AppBarTab
+            title="Sign up"
+            route="/signup"
           />
         )}
       </ScrollView>

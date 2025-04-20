@@ -1,8 +1,9 @@
 import { StyleSheet, View } from "react-native";
 import { Route, Routes, Navigate } from "react-router-native";
-import theme from "../theme";
+import theme from "../styles/theme";
 import AppBar from "./AppBar";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 import RepositoryList from "./RepositoryList";
 import Repository from "./Repository";
 import CreateReview from "./CreateReview";
@@ -31,6 +32,10 @@ const Main = () => {
         <Route
           path="/signin"
           element={<SignIn />}
+        />
+        <Route
+          path="/signup"
+          element={<SignUp />}
         />
         <Route
           path="/createreview"

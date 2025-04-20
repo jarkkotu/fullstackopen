@@ -1,6 +1,6 @@
 import { Text as NativeText, StyleSheet } from "react-native";
 
-import theme from "../theme";
+import theme from "../styles/theme";
 
 const styles = StyleSheet.create({
   text: {
@@ -33,7 +33,12 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
     style,
   ];
 
-  return <NativeText style={textStyle} {...props} />;
+  return (
+    <NativeText
+      style={textStyle}
+      {...props}
+    />
+  );
 };
 
 export default Text;
