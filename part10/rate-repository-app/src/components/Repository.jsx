@@ -1,9 +1,8 @@
-import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-native";
 import { StyleSheet, FlatList, View } from "react-native";
-import { GET_REPOSITORY } from "../graphql/queries";
 import RepositoryInfo from "./RepositoryInfo";
 import ReviewItem from "./ReviewItem";
+import useRepository from "../hooks/useRepository";
 
 const styles = StyleSheet.create({
   separator: {
@@ -13,14 +12,14 @@ const styles = StyleSheet.create({
 
 const Repository = () => {
   const { id } = useParams();
-  const { data, loading, error } = useQuery(GET_REPOSITORY, {
-    variables: { id },
-    fetchPolicy: "cache-and-network",
-  });
+  const { repository, loading, error } = useRepository({ id });
+
   if (loading) {
     return null;
   }
-  const repository = data && !loading ? data.repository : null;
+  if (error) {
+    console.error(error);
+  }
 
   const reviews = repository.reviews.edges.map((edge) => edge.node);
 

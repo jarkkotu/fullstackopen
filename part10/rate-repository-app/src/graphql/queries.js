@@ -57,5 +57,6 @@ export const GET_REPOSITORY = gql`
       }
     }
   }
-  ${(REPOSITORY_LIST, REVIEW_LIST)}
+  ${REPOSITORY_LIST}
+  ${REVIEW_LIST}
 `;

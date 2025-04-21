@@ -12,6 +12,9 @@ const theme = {
     textInputBackground: "#ffffff",
     textInputError: "#d73a4a",
     textInputErrorBorder: "#d73a4a",
+
+    buttonPrimary: "#0366d6",
+    buttonDelete: "#d73a4a",
   },
   fontSizes: {
     body: 14,

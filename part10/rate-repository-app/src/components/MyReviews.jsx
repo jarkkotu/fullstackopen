@@ -16,7 +16,12 @@ const MyReviews = () => {
     <FlatList
       data={reviews}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
-      renderItem={({ item }) => <ReviewItem review={item} />}
+      renderItem={({ item }) => (
+        <ReviewItem
+          review={item}
+          showButtons={true}
+        />
+      )}
       keyExtractor={(item) => item.id}
     />
   );

@@ -4,7 +4,7 @@ import theme from "../styles/theme";
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.buttonPrimary,
     padding: 10,
     borderRadius: 5,
     width: "100%",
@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ onPress, title }) => {
+const Button = ({ onPress, title, style }) => {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }]}
+      style={({ pressed }) => [styles.button, pressed && { opacity: 0.5 }, style]}
     >
       <Text style={styles.buttonText}>{title}</Text>
     </Pressable>

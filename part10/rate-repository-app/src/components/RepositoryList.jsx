@@ -124,7 +124,7 @@ const RepositoryList = () => {
   const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
   const [orderBy, setOrderBy] = useState(AllRepositoriesOrderBy.CREATED_AT);
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC);
-  const { repositories } = useRepositories(orderBy, orderDirection, debouncedSearchKeyword);
+  const { repositories } = useRepositories({ orderBy, orderDirection, debouncedSearchKeyword });
 
   return (
     <RepositoryListContainer
