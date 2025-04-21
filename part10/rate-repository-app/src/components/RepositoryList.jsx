@@ -1,11 +1,13 @@
 import { StyleSheet, FlatList, View, Pressable } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { Searchbar } from "react-native-paper";
 import { useNavigate } from "react-router-native";
 import RepositoryInfo from "./RepositoryInfo";
 import useRepositories from "../hooks/useRepositories";
-import { useState } from "react";
+import React, { useState } from "react";
 import { AllRepositoriesOrderBy } from "../enums/AllRepositoriesOrderBy";
 import { OrderDirection } from "../enums/OrderDirection";
+import { useDebounce } from "use-debounce";
 
 const styles = StyleSheet.create({
   separator: {
@@ -31,9 +33,23 @@ const OrderByItems = [
   },
 ];
 
-const OrderByPicker = ({ setOrderBy, setOrderDirection }) => {
-  const [selectedOrderByItem, setSelectedOrderByItem] = useState(OrderByItems[0]);
+const GetOrderByItem = (orderBy, orderDirection) => {
+  return OrderByItems.find((item) => item.orderBy === orderBy && item.orderDirection === orderDirection);
+};
 
+const RepositoryListHeader = ({
+  searchKeyword,
+  setSearchKeyword,
+  orderBy,
+  orderDirection,
+  setOrderBy,
+  setOrderDirection,
+}) => {
+  const [selectedOrderByItem, setSelectedOrderByItem] = useState(GetOrderByItem(orderBy, orderDirection));
+
+  const handleSearchKeywordChange = (keyword) => {
+    setSearchKeyword(keyword);
+  };
   const handleOrderByChange = (item) => {
     setSelectedOrderByItem(item);
     setOrderBy(item.orderBy);
@@ -41,54 +57,82 @@ const OrderByPicker = ({ setOrderBy, setOrderDirection }) => {
   };
 
   return (
-    <Picker
-      placeholder="Select order by"
-      selectedValue={selectedOrderByItem}
-      onValueChange={handleOrderByChange}
-    >
-      {OrderByItems.map((item) => (
-        <Picker.Item
-          key={item.label}
-          label={item.label}
-          value={item}
-        />
-      ))}
-    </Picker>
+    <View>
+      <Searchbar
+        placeholder="Search for repositories"
+        onChangeText={handleSearchKeywordChange}
+        value={searchKeyword}
+      />
+      <Picker
+        placeholder="Select order by"
+        selectedValue={selectedOrderByItem}
+        onValueChange={handleOrderByChange}
+      >
+        {OrderByItems.map((item) => (
+          <Picker.Item
+            key={item.label}
+            label={item.label}
+            value={item}
+          />
+        ))}
+      </Picker>
+    </View>
   );
 };
 
-export const RepositoryListContainer = ({ repositories, setOrderBy, setOrderDirection }) => {
+const RepositoryListItem = ({ repository }) => {
   const navigate = useNavigate();
 
-  const repositoryNodes = repositories ? repositories.edges.map((edge) => edge.node) : [];
-
   return (
-    <FlatList
-      data={repositoryNodes}
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
-      renderItem={({ item }) => (
-        <Pressable onPress={() => navigate(`/repository/${item.id}`)}>
-          <RepositoryInfo repository={item} />
-        </Pressable>
-      )}
-      ListHeaderComponent={() => (
-        <OrderByPicker
-          setOrderBy={setOrderBy}
-          setOrderDirection={setOrderDirection}
-        />
-      )}
-    />
+    <Pressable onPress={() => navigate(`/repository/${repository.id}`)}>
+      <RepositoryInfo repository={repository} />
+    </Pressable>
   );
 };
 
+export class RepositoryListContainer extends React.Component {
+  renderHeader = () => {
+    const { searchKeyword, setSearchKeyword, orderBy, orderDirection, setOrderBy, setOrderDirection } = this.props;
+
+    return (
+      <RepositoryListHeader
+        searchKeyword={searchKeyword}
+        setSearchKeyword={setSearchKeyword}
+        orderBy={orderBy}
+        orderDirection={orderDirection}
+        setOrderBy={setOrderBy}
+        setOrderDirection={setOrderDirection}
+      />
+    );
+  };
+
+  render() {
+    const repositoryNodes = this.props.repositories ? this.props.repositories.edges.map((edge) => edge.node) : [];
+    return (
+      <FlatList
+        data={repositoryNodes}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        renderItem={({ item }) => <RepositoryListItem repository={item} />}
+        ListHeaderComponent={this.renderHeader}
+      />
+    );
+  }
+}
+
 const RepositoryList = () => {
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
   const [orderBy, setOrderBy] = useState(AllRepositoriesOrderBy.CREATED_AT);
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC);
-  const { repositories } = useRepositories({ orderBy, orderDirection });
+  const { repositories } = useRepositories(orderBy, orderDirection, debouncedSearchKeyword);
 
   return (
     <RepositoryListContainer
       repositories={repositories}
+      searchKeyword={searchKeyword}
+      setSearchKeyword={setSearchKeyword}
+      orderBy={orderBy}
+      orderDirection={orderDirection}
       setOrderBy={setOrderBy}
       setOrderDirection={setOrderDirection}
     />
