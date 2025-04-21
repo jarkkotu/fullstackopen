@@ -12,16 +12,13 @@ const styles = StyleSheet.create({
 
 const Repository = () => {
   const { id } = useParams();
-  const { repository, loading, error } = useRepository({ id });
+  const { repository, loading, fetchMore } = useRepository({ id, first: 2 });
 
   if (loading) {
     return null;
   }
-  if (error) {
-    console.error(error);
-  }
 
-  const reviews = repository.reviews.edges.map((edge) => edge.node);
+  const reviews = repository?.reviews.edges.map((edge) => edge.node);
 
   return (
     <FlatList
@@ -35,7 +32,11 @@ const Repository = () => {
           showUrl={true}
         />
       )}
-    ></FlatList>
+      onEndReached={() => {
+        fetchMore();
+      }}
+      onEndReachedThreshold={0.5}
+    />
   );
 };
 

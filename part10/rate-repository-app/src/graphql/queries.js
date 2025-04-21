@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { REPOSITORY_LIST, REVIEW_LIST } from "./fragments";
+import { REPOSITORY_LIST, REVIEW_LIST, PAGE_INFO } from "./fragments";
 
 export const GET_REPOSITORIES = gql`
   query (
@@ -21,9 +21,13 @@ export const GET_REPOSITORIES = gql`
           ...RepositoryList
         }
       }
+      pageInfo {
+        ...PageInfo
+      }
     }
   }
   ${REPOSITORY_LIST}
+  ${PAGE_INFO}
 `;
 
 export const CURRENT_USER = gql`
@@ -44,19 +48,24 @@ export const CURRENT_USER = gql`
 `;
 
 export const GET_REPOSITORY = gql`
-  query ($id: ID!) {
+  query ($id: ID!, $first: Int, $after: String) {
     repository(id: $id) {
       ...RepositoryList
       url
-      reviews {
+      reviews(first: $first, after: $after) {
         edges {
           node {
             ...ReviewList
           }
+          cursor
+        }
+        pageInfo {
+          ...PageInfo
         }
       }
     }
   }
   ${REPOSITORY_LIST}
   ${REVIEW_LIST}
+  ${PAGE_INFO}
 `;

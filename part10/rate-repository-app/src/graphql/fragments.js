@@ -27,3 +27,12 @@ export const REVIEW_LIST = gql`
     }
   }
 `;
+
+export const PAGE_INFO = gql`
+  fragment PageInfo on PageInfo {
+    endCursor
+    startCursor
+    hasNextPage
+    hasPreviousPage
+  }
+`;

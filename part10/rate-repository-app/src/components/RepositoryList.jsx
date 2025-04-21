@@ -107,13 +107,17 @@ export class RepositoryListContainer extends React.Component {
   };
 
   render() {
-    const repositoryNodes = this.props.repositories ? this.props.repositories.edges.map((edge) => edge.node) : [];
+    const { repositories, onEndReached } = this.props;
+
+    const repositoryNodes = repositories ? repositories.edges.map((edge) => edge.node) : [];
     return (
       <FlatList
         data={repositoryNodes}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         renderItem={({ item }) => <RepositoryListItem repository={item} />}
         ListHeaderComponent={this.renderHeader}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.5}
       />
     );
   }
@@ -124,7 +128,7 @@ const RepositoryList = () => {
   const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
   const [orderBy, setOrderBy] = useState(AllRepositoriesOrderBy.CREATED_AT);
   const [orderDirection, setOrderDirection] = useState(OrderDirection.DESC);
-  const { repositories } = useRepositories({ orderBy, orderDirection, debouncedSearchKeyword });
+  const { repositories, fetchMore } = useRepositories({ first: 8, orderBy, orderDirection, debouncedSearchKeyword });
 
   return (
     <RepositoryListContainer
@@ -135,6 +139,9 @@ const RepositoryList = () => {
       orderDirection={orderDirection}
       setOrderBy={setOrderBy}
       setOrderDirection={setOrderDirection}
+      onEndReached={() => {
+        fetchMore();
+      }}
     />
   );
 };
