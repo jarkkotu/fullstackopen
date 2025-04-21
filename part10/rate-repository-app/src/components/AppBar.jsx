@@ -2,10 +2,9 @@ import { StyleSheet, View, ScrollView } from "react-native";
 import Constants from "expo-constants";
 import theme from "../styles/theme";
 import AppBarTab from "./AppBarTab";
-import { useQuery } from "@apollo/client";
-import { ME } from "../graphql/queries";
 import useAuthStorage from "../hooks/useAuthStorage";
 import { useApolloClient } from "@apollo/client";
+import useCurrentUser from "../hooks/useCurrentUser";
 
 const styles = StyleSheet.create({
   container: {
@@ -22,9 +21,7 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
-  const { data } = useQuery(ME);
-
-  const isAuthorized = data && data.me;
+  const { currentUser } = useCurrentUser();
 
   const handleSignOut = async () => {
     await authStorage.removeAccessToken();
@@ -42,13 +39,19 @@ const AppBar = () => {
           title="Repositories"
           route="/"
         />
-        {isAuthorized && (
+        {currentUser && (
           <AppBarTab
             title="Create a review"
             route="/createreview"
           />
         )}
-        {isAuthorized ? (
+        {currentUser && (
+          <AppBarTab
+            title="My reviews"
+            route="/myreviews"
+          />
+        )}
+        {currentUser ? (
           <AppBarTab
             title="Sign out"
             onPress={handleSignOut}
@@ -59,7 +62,7 @@ const AppBar = () => {
             route="/signin"
           />
         )}
-        {!isAuthorized && (
+        {!currentUser && (
           <AppBarTab
             title="Sign up"
             route="/signup"

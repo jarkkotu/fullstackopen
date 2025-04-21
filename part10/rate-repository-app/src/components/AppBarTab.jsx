@@ -8,12 +8,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 5,
+    padding: 5,
     backgroundColor: theme.colors.appBarBackground,
   },
   text: {
     color: "#ffffff",
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
   },
   pressable: {

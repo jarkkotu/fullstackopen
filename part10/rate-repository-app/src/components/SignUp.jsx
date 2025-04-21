@@ -78,7 +78,7 @@ const SignUp = () => {
       console.log("signIn", signInData);
       navigate("/");
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

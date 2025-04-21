@@ -26,13 +26,21 @@ export const GET_REPOSITORIES = gql`
   ${REPOSITORY_LIST}
 `;
 
-export const ME = gql`
-  query {
+export const CURRENT_USER = gql`
+  query getCurrentUser($includeReviews: Boolean = false) {
     me {
       id
       username
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            ...ReviewList
+          }
+        }
+      }
     }
   }
+  ${REVIEW_LIST}
 `;
 
 export const GET_REPOSITORY = gql`
